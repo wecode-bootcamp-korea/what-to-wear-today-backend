@@ -1,10 +1,11 @@
-from django.shortcuts import render
-from django.views import View
-from django.http import JsonResponse
 import requests 
 import json
 
-# https://openweathermap.org/current
+from django.shortcuts import render
+from django.views import View
+from django.http import JsonResponse
+
+# https://openweathermap.org/current openapi 사용
 class GetWeatherInfo(View):
 
     def get(self, request):
@@ -20,24 +21,24 @@ class GetWeatherInfo(View):
 
         url = 'http://api.openweathermap.org/data/2.5/weather'
 
-        myResponse = requests.get(url, params=location).json()
+        my_response = requests.get(url, params=location).json()
 
-        return JsonResponse(myResponse)
+        return JsonResponse(my_response)
 
     def post(self, request):
 
-        curLocation = json.loads(request.body)
+        curl_location = json.loads(request.body)
         location = {
-                'lat': curLocation['lat'],
-                'lon': curLocation['lon'],
+                'lat': curl_location['lat'],
+                'lon': curl-location['lon'],
                 'APPID': 'd80201d1f829dc07700e3542d9283822',
                 'lang':'kr',
                 'units':'metric'
         }
         url = 'http://api.openweathermap.org/data/2.5/weather'
-        myResponse = requests.get(url, params=location).json()
+        my_response = requests.get(url, params=location).json()
 
-        return JsonResponse(myResponse)
+        return JsonResponse(my_response)
 
 
 # Create your views here.

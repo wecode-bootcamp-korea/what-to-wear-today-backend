@@ -30,7 +30,7 @@ class GetWeatherInfo(View):
         curl_location = json.loads(request.body)
         location = {
                 'lat': curl_location['lat'],
-                'lon': curl-location['lon'],
+                'lon': curl_location['lon'],
                 'APPID': 'd80201d1f829dc07700e3542d9283822',
                 'lang':'kr',
                 'units':'metric'

@@ -1,31 +1,14 @@
-from django.http import JsonResponse, HttpResponse
-from .models import User
-from django.views import View
-import json
-import bcrypt
 import jwt
+import json
+import bcrypt                  
+
+from django.views import View
+from django.http import JsonResponse, HttpResponse
 from django.core.exceptions import ObjectDoesNotExist
+
+from .models import User
+from .utils import login_decorator
 from whattowear.settings import wtwt_secret
-
-def login_decorator(f):
-    def wrapper(self, request, *args, **kwargs):
-        access_token = request.headers.get('Authorization', None)
-
-        try:
-            if access_token:
-                decoded = jwt.decode(access_token, wtwt_secret, algorithms=['HS256'])
-                user_id = decoded["user_id"]
-                user = User.objects.get(id=user_id)
-                request.user = user
-
-                return f(self, request, *args, **kwargs)
-            else:
-                return HttpResponse(status=401)
-        except jwt.DecodeError:
-            return HttpResponse(status=401)
-
-    return wrapper
-
 
 class UserView(View):
 
@@ -46,16 +29,13 @@ class UserView(View):
 
             return HttpResponse(status=200)
 
-
-class InfoView(View):
-
     @login_decorator
     def get(self, request):
         return JsonResponse({
             'user_name' : request.user.user_name
         })
 
-class ChangeView(View):
+class CredentialView(View):
 
     @login_decorator
     def post(self, request):
@@ -84,7 +64,7 @@ class ChangeView(View):
             return HttpResponse(status=401)
  
 
-class LoginView(View):
+class AuthView(View):
     
     def post(self, request):
         login_user = json.loads(request.body)

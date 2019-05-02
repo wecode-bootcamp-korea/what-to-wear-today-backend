@@ -1,14 +1,13 @@
 from django.urls import path
+
 from . import views
 from .views import UserView
-from .views import LoginView
-from .views import InfoView
-from .views import ChangeView
+from .views import AuthView
+from .views import CredentialView
 
 urlpatterns = [
-    path('signup', UserView.as_view()),
-    path('login', LoginView.as_view()),
-    path('info', InfoView.as_view()),
-    path('change', ChangeView.as_view())
+    path('', UserView.as_view()),
+    path('/auth', AuthView.as_view()),
+    path('/credential', CredentialView.as_view())
 ]
 

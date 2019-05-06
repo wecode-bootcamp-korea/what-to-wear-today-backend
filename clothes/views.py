@@ -1,6 +1,4 @@
-import jwt
 import json
-import bcrypt
 
 from django.views import View
 from django.http import JsonResponse, HttpResponse
@@ -30,7 +28,8 @@ class HeartView(View):
     
     @login_decorator
     def get(self, request):
-        user = request.user
-        hearts_list = Cloth.objects.filter(hearts__id=user.id)
-        print(list(hearts_list))
-        return JsonResponse({'hearts_list' : json.loads(serializers.serialize('json', hearts_list))})
+        user        = request.user
+        hearts_list = list(Cloth.objects.filter(hearts__id=user.id).values('pk'))
+        cloth_id    = [d['pk'] for d in hearts_list]
+
+        return JsonResponse({'cloth_id' : cloth_id})

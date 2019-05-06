@@ -4,6 +4,7 @@ import bcrypt
 
 from django.views import View
 from django.http import JsonResponse, HttpResponse
+from django.core import serializers
 
 from user.models import User
 from .models import Cloth
@@ -26,3 +27,10 @@ class HeartView(View):
             message = 'Heart cloth'
 
         return JsonResponse({"hearts_count" : cloth.total_hearts, "message" : message})
+    
+    @login_decorator
+    def get(self, request):
+        user = request.user
+        hearts_list = Cloth.objects.filter(hearts__id=user.id)
+        print(list(hearts_list))
+        return JsonResponse({'hearts_list' : json.loads(serializers.serialize('json', hearts_list))})

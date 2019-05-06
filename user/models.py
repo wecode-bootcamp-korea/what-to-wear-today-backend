@@ -17,4 +17,11 @@ class User(models.Model):
     class Meta:
         db_table = "users"
     
+class UserOption(models.Model):
+    HATEHOT = models.BooleanField()
+    HATECOLD = models.BooleanField()
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
 
+
+    class Meta:
+        db_table = "users_option"

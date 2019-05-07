@@ -21,16 +21,16 @@ class UserView(View):
             password = bytes(new_user['user_password'], "utf-8")
             hashed_password = bcrypt.hashpw(password, bcrypt.gensalt())
 
-            create_user = User(
+            new_user = User(
                 user_name = new_user['user_name'],
                 user_password = hashed_password.decode("UTF-8"),
                 user_gender = new_user['user_gender']
             )
             create_user.save()
 
-            user_setting = UserOption(
-                HATEHOT = False,
-                HATECOLD = False,
+            user_settings = UserOption(
+                hate_hot = False,
+                hate_cold = False,
                 user = create_user
             )
             user_setting.save()
@@ -99,13 +99,11 @@ class UserSettingView(View):
         return JsonResponse({
                 'user_name' : request.user.user_name,
                 'user_gender' : request.user.user_gender,
-                'hate_hot' : user_info.HATEHOT,
-                'hate_cold' : user_info.HATECOLD
+                'hate_hot' : user_info.hate_hot,
+                'hate_cold' : user_info.hate_cold
             })
 
-
 class UserSettingUpdateView(View):
-
 
     @login_decorator
     def post(self, request):
@@ -113,13 +111,15 @@ class UserSettingUpdateView(View):
         try:
             user = request.user
             u_setting = json.loads(request.body)
-            user_setting = UserOption.objects.get(user = request.user.id)
+
             user.user_gender = u_setting["user_gender"]
             user.save()
-            user_setting.HATEHOT = u_setting["hate_hot"]
-            user_setting.HATECOLD = u_setting["hate_cold"]
+
+            user_setting = UserOption.objects.get(user = request.user.id)
+            user_setting.hate_hot = u_setting["hate_hot"]
+            user_setting.hate_cold = u_setting["hate_cold"]
             user_setting.save()
-            #print(update_info.values())
+
             return HttpResponse(status=200)
         
         except ObjectDoesNotExist:

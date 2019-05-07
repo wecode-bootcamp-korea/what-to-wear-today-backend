@@ -18,8 +18,8 @@ class User(models.Model):
         db_table = "users"
     
 class UserOption(models.Model):
-    HATEHOT = models.BooleanField()
-    HATECOLD = models.BooleanField()
+    hate_hot = models.BooleanField()
+    hate_cold = models.BooleanField()
     user = models.ForeignKey(User, on_delete=models.CASCADE)
 
 

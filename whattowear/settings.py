@@ -128,4 +128,4 @@ STATIC_URL = '/static/'
 
 # CORS 사용을 위한 명령어 추가
 
-CORS_ORIGIN_ALLOW_ALL=True
+CORS_ORIGIN_ALLOW_ALL='localhost:3000'

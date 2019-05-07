@@ -46,7 +46,6 @@ INSTALLED_APPS = [
     'user',
     'clothes'
     'corsheaders'
-    'clothes'
 ]
 
 MIDDLEWARE = [

@@ -2,7 +2,6 @@ import json
 
 from django.views import View
 from django.http import JsonResponse, HttpResponse
-from django.core import serializers
 
 from user.models import User
 from .models import Cloth
@@ -32,4 +31,4 @@ class HeartView(View):
         hearts_list = list(Cloth.objects.filter(hearts__id=user.id).values('pk'))
         cloth_id    = [d['pk'] for d in hearts_list]
 
-        return JsonResponse({'cloth_id' : cloth_id})
+        return JsonResponse({'cloth_id' : list(reversed(cloth_id))})

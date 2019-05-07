@@ -128,4 +128,8 @@ STATIC_URL = '/static/'
 
 # CORS 사용을 위한 명령어 추가
 
-CORS_ORIGIN_ALLOW_ALL='localhost:3000'
+CORS_ORIGIN_WHITELIST = (
+    'localhost:3000',
+    '127.0.0.1:3000'
+)
+

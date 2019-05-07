@@ -11,7 +11,7 @@ class Gender(Enum):
 
 class User(models.Model):
     user_name = models.CharField(max_length=20)
-    user_password = models.CharField(max_length=20)
+    user_password = models.CharField(max_length=100)
     user_gender = models.CharField(max_length=3, choices = Gender.choices())
 
     class Meta:

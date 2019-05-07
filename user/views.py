@@ -6,7 +6,7 @@ from django.views import View
 from django.http import JsonResponse, HttpResponse
 from django.core.exceptions import ObjectDoesNotExist
 
-from .models import User
+from .models import User, UserOption
 from .utils import login_decorator
 from whattowear.settings import wtwt_secret
 
@@ -21,11 +21,19 @@ class UserView(View):
             password = bytes(new_user['user_password'], "utf-8")
             hashed_password = bcrypt.hashpw(password, bcrypt.gensalt())
 
-            User(
+            new_user = User(
                 user_name = new_user['user_name'],
                 user_password = hashed_password.decode("UTF-8"),
                 user_gender = new_user['user_gender']
-            ).save()
+            )
+            new_user.save()
+
+            user_settings = UserOption(
+                hate_hot = False,
+                hate_cold = False,
+                user = new_user
+            )
+            user_setting.save()
 
             return JsonResponse({'message' : 'SIGNUP_SUCCESS'}, status=200)
 
@@ -83,3 +91,38 @@ class AuthView(View):
         except Exception as e:
             print(e)
             return HttpResponse(status=500)
+
+class UserSettingView(View):
+
+    @login_decorator
+    def get(self, request):
+        user_info = UserOption.objects.get(user = request.user.id)
+        return JsonResponse({
+                'user_name' : request.user.user_name,
+                'user_gender' : request.user.user_gender,
+                'hate_hot' : user_info.hate_hot,
+                'hate_cold' : user_info.hate_cold
+            })
+
+class UserSettingUpdateView(View):
+
+    @login_decorator
+    def post(self, request):
+
+        try:
+            user = request.user
+            u_setting = json.loads(request.body)
+
+            user.user_gender = u_setting["user_gender"]
+            user.save()
+
+            user_setting = UserOption.objects.get(user = request.user.id)
+            user_setting.hate_hot = u_setting["hate_hot"]
+            user_setting.hate_cold = u_setting["hate_cold"]
+            user_setting.save()
+
+            return HttpResponse(status=200)
+        
+        except ObjectDoesNotExist:
+            return HttpResponse(status=401)
+

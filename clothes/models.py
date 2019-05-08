@@ -20,3 +20,17 @@ class Cloth(models.Model):
 
     class Meta:                
         db_table = "clothes"
+
+class ClothesIcon(models.Model):
+    clothes_des = models.CharField(max_length=40)
+
+    class Meta:
+        db_table = "clothes_icon"
+
+class ClothesComment(models.Model):
+    clothes_comment = models.CharField(max_length=100)
+    clothes_gender = models.CharField(max_length=20, default='')
+
+    class Meta:
+        db_table = "clothes_comment"
+

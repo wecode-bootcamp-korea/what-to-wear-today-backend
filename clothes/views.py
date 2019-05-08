@@ -19,29 +19,31 @@ class HeartView(View):
 
         if cloth.hearts.filter(id = user.id).exists():
             cloth.hearts.remove(user)
-            message = 'Unheart cloth'
+            heart_cloth = False
         else:
             cloth.hearts.add(user)
-            message = 'Heart cloth'
+            heart_cloth = True
 
-        return JsonResponse({"hearts_count" : cloth.total_hearts, "message" : message})
+        return JsonResponse({"total_hearts" : cloth.total_hearts, "heart_cloth" : heart_cloth})
     
     @login_decorator
     def get(self, request):
         user        = request.user
         hearts_list = list(Cloth.objects.filter(hearts__id=user.id).values('pk', 'img_ref'))
-        cloth_id    = [{'img_id' : d['pk'], 'img_ref' : d['img_ref'], 'total_heart': Cloth.objects.get(id = d['pk']).total_hearts} for d in hearts_list]
+        cloth_id    = [{'img_id' : d['pk'], 'img_ref' : d['img_ref'], 'total_hearts' : Cloth.objects.get(id = d['pk']).total_hearts} for d in hearts_list]
 
         return JsonResponse({'heart_list' : list(reversed(cloth_id))})
 
 
-class Top10View(View):
+class TopImageView(View):
 
     def get(self, request):
+        number            = json.loads(request.body)
+        top_number        = number['top_number']
         hearts_list       = list(Cloth.objects.all().values('hearts__id').values('pk').distinct())
-        total_hearts_list = [{"img_id" : d['pk'], "total_heart" : Cloth.objects.get(id = d['pk']).total_hearts} for d in hearts_list]
-        data              = sorted(total_hearts_list, key = itemgetter('total_heart'))
+        total_hearts_list = [{"img_id" : d['pk'], "total_hearts" : Cloth.objects.get(id = d['pk']).total_hearts} for d in hearts_list]
+        data              = sorted(total_hearts_list, key = itemgetter('total_hearts'))
         data.reverse()
-        top10             = data[0 : min(10,len(data))]
+        top               = data[0 : min(int(top_number),len(data))]
         
-        return JsonResponse({'top10_list' : top10})
+        return JsonResponse({'top_list' : top})

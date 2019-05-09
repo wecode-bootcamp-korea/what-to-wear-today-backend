@@ -8,8 +8,8 @@ from user.models import Gender
 class Cloth(models.Model):
     item_id     = models.CharField(max_length=200) 
     user_gender = models.CharField(max_length=3, choices = Gender.choices())
-    img_ref     = models.CharField(max_length=200)
-    page_ref    = models.CharField(max_length=200)
+    img_ref     = models.CharField(max_length=2500)
+    page_ref    = models.CharField(max_length=2500)
     temp_min    = models.CharField(max_length=20)
     temp_max    = models.CharField(max_length=20)
     hearts      = models.ManyToManyField(User, related_name='hearts')

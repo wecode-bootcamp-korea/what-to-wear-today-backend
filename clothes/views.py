@@ -35,7 +35,7 @@ class HeartView(View):
 
 class ClothesRecom(View):
 
-    def get_clothesicon_list(temp_id):
+    def get_clothesicon_list(self, temp_id):
 
         clothes_icon_list = {
             1: [1,2,3,4],
@@ -50,7 +50,7 @@ class ClothesRecom(View):
 
         return clothes_icon_list[temp_id]
 
-    def get_weather_comments(temp_id):
+    def get_weather_comments(self, temp_id):
 
         weather_comment = {
             1: '무더운 여름 시원한 수박드시고 행복한 여름 보내세요.',

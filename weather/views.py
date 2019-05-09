@@ -1,44 +1,50 @@
 import requests
 import json
+import my_settings
 
 from django.shortcuts import render
 from django.views import View
 from django.http import JsonResponse
-from clothes.views import ClothesRecom 
+from clothes.views import ClothesRecom
+from user.views import *
+from user.models import User, UserOption
+from user.utils import login_decorator_pass
 
 # https://openweathermap.org/current openapi 사용
-class GetWeatherInfo(View):
+class WeatherInfo(View):
 
+    @login_decorator_pass
     def post(self, request):
-
         curl_location = json.loads(request.body)
         location = {
-                'lat': curl_location['lat'],
-                'lon': curl_location['lon'],
-                'APPID': 'd80201d1f829dc07700e3542d9283822',
-                'lang':'kr',
-                'units':'metric'
+            'lat': curl_location['lat'],
+            'lon': curl_location['lon'],
+            'APPID': my_settings.openweather_key,
+            'lang':'kr',
+            'units':'metric'
         }
         url = 'http://api.openweathermap.org/data/2.5/weather'
-        my_response = requests.get(url, params=location).json()
+        my_response = requests.get(url, params=location, timeout=5).json()
 
-        address_get = GetWeatherInfo.get_address(curl_location['lat'],curl_location['lon'])
+        address_get = self.get_address(curl_location['lat'], curl_location['lon'])
+        
+        temp_id_get = self.get_temp_id(my_response["main"]["temp"])
+        temp_id_adj = self.adjust_temp(request, temp_id_get) 
 
-        temp_id_get = GetWeatherInfo.get_temp_id(my_response["main"]["temp"])
-        icon_lists = ClothesRecom.get_clothesicon_list(temp_id_get)
-        comment = ClothesRecom.get_weather_comments(temp_id_get)
+        clothes = ClothesRecom()
+        icon_lists = clothes.get_clothesicon_list(temp_id_adj)
+        comment = clothes.get_weather_comments(temp_id_adj)
         my_response.update(
                 {
                     'icon_lists':icon_lists,
                     'comment':comment,
-                    'region_name':address_get["documents"][0]["address"]['region_1depth_name']
-
+                    'region_name':address_get["documents"][0]["address"]['region_2depth_name']
                 }
             )
-
+        
         return JsonResponse(my_response)
 
-    def get_temp_id(cur_temp):
+    def get_temp_id(self, cur_temp):
 
         if cur_temp >= 28:
             temp_id = 1
@@ -59,15 +65,27 @@ class GetWeatherInfo(View):
 
         return temp_id
 
-    def get_address(latitude,longitude):
+    def get_address(self, latitude, longitude):
 
         url = "https://dapi.kakao.com/v2/local/geo/coord2address.json"
-        header = {'Authorization':'KakaoAK 0f5eaded6c5395caef32cd5621bf24ad',}
+        header = {'Authorization':my_settings.kakao_auth_key,}
         pa = {
-                'x': longitude,
-                'y': latitude
-                }
+            'x': longitude,
+            'y': latitude
+        }
 
-        my_response = requests.get(url, headers=header, params=pa)
+        my_response = requests.get(url, headers=header, params=pa, timeout=5)
 
         return my_response.json()
+
+    def adjust_temp(self, request, temp_id):
+        try:
+            user = request.user
+            user_option = UserOption.objects.get(user=user)
+            if temp_id <= 4 and user_option.hate_hot == True:
+                return temp_id - 1 
+            elif temp_id >= 7 and user_option.hate_cold == True:
+                return temp_id + 1
+            else:
+                return temp_id
+        except: return temp_id

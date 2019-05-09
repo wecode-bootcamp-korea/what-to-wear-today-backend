@@ -29,8 +29,15 @@ class HeartView(View):
     @login_decorator
     def get(self, request):
         user        = request.user
-        hearts_list = list(HeartTime.objects.filter(user_id=user.id).values('cloth_id','heart_time').order_by('-heart_time'))
-        cloth_id    = [{'img_id' : d['cloth_id'], 'img_ref' : Cloth.objects.get(id = d['cloth_id']).img_ref, 'total_hearts' : Cloth.objects.get(id = d['cloth_id']).total_hearts} for d in hearts_list]
+        hearts      = HeartTime.objects.filter(user_id=user.id).values('cloth_id','heart_time').order_by('-heart_time')
+        hearts_list = list(hearts)
+        cloth_id    = [
+            {
+                'img_id' : d['cloth_id'], 
+                'img_ref' : Cloth.objects.get(id = d['cloth_id']).img_ref,
+                'total_hearts' : Cloth.objects.get(id = d['cloth_id']).total_hearts
+            } for d in hearts_list
+        ]
 
         return JsonResponse({'hearts_list' : cloth_id})
 
@@ -41,9 +48,15 @@ class TopImageView(View):
         number            = json.loads(request.body)
         top_number        = number['top_number']
         hearts_list       = list(Cloth.objects.all().values('hearts__id').values('pk').distinct())
-        total_hearts_list = [{"img_id" : d['pk'], "total_hearts" : Cloth.objects.get(id = d['pk']).total_hearts} for d in hearts_list]
+        total_hearts_list = [
+                {
+                    "img_id" : d['pk'],
+                    "total_hearts" : Cloth.objects.get(id = d['pk']).total_hearts
+                } for d in hearts_list
+        ]
         data              = sorted(total_hearts_list, key = itemgetter('total_hearts'))
         data.reverse()
-        top               = data[0 : min(int(top_number),len(data))]
+        
+        top = data[0 : min(int(top_number),len(data))]
         
         return JsonResponse({'top_list' : top})

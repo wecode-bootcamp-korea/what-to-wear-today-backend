@@ -17,11 +17,11 @@ class HeartView(View):
         cloth_id = cloth['img_id']
         cloth    = Cloth.objects.get(id = cloth_id)
 
-        if cloth.hearts2.filter(id = user.id).exists():
-            cloth.hearts2.remove(user)
+        if cloth.hearts.filter(id = user.id).exists():
+            cloth.hearts.remove(user)
             heart_cloth = False
         else:
-            cloth.hearts2.add(user)
+            cloth.hearts.add(user)
             heart_cloth = True
 
         return JsonResponse({"total_hearts" : cloth.total_hearts, "heart_cloth" : heart_cloth})

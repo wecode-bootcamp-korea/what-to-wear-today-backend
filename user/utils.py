@@ -40,7 +40,7 @@ def login_decorator_pass(f):
             else:              
                 return f(self, request, *args, **kwargs) 
         except jwt.DecodeError:
-            return HttpResponse(status=401) 
+            return f(self, request, *args, **kwargs) 
 
     return wrapper
 

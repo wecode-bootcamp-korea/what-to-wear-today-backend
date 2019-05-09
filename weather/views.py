@@ -88,4 +88,5 @@ class WeatherInfo(View):
                 return temp_id + 1
             else:
                 return temp_id
-        except: return temp_id
+        except: 
+            return temp_id

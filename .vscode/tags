@@ -1,0 +1,316 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.8	//
+0001_initial.py	../clothes/migrations/0001_initial.py	1;"	kind:file	line:1
+0001_initial.py	../user/migrations/0001_initial.py	1;"	kind:file	line:1
+0002_auto_20190430_0803.py	../user/migrations/0002_auto_20190430_0803.py	1;"	kind:file	line:1
+0002_clothescomment_clothesicon.py	../clothes/migrations/0002_clothescomment_clothesicon.py	1;"	kind:file	line:1
+0003_remove_user_user_gender.py	../user/migrations/0003_remove_user_user_gender.py	1;"	kind:file	line:1
+0004_user_user_gender.py	../user/migrations/0004_user_user_gender.py	1;"	kind:file	line:1
+0005_auto_20190507_0757.py	../user/migrations/0005_auto_20190507_0757.py	1;"	kind:file	line:1
+0005_useroption.py	../user/migrations/0005_useroption.py	1;"	kind:file	line:1
+0006_auto_20190507_0936.py	../user/migrations/0006_auto_20190507_0936.py	1;"	kind:file	line:1
+0007_merge_20190507_1128.py	../user/migrations/0007_merge_20190507_1128.py	1;"	kind:file	line:1
+ALLOWED_HOSTS	../whattowear/settings.py	/^ALLOWED_HOSTS = []$/;"	kind:variable	line:33
+AUTH_PASSWORD_VALIDATORS	../whattowear/settings.py	/^AUTH_PASSWORD_VALIDATORS = [$/;"	kind:variable	line:97
+AppConfig	../clothes/apps.py	/^from django.apps import AppConfig$/;"	kind:namespace	line:1
+AppConfig	../user/apps.py	/^from django.apps import AppConfig$/;"	kind:namespace	line:1
+AppConfig	../weather/apps.py	/^from django.apps import AppConfig$/;"	kind:namespace	line:1
+AuthView	../user/urls.py	/^from .views import AuthView$/;"	kind:namespace	line:5
+AuthView	../user/views.py	/^class AuthView(View):$/;"	kind:class	line:75
+BASE_DIR	../whattowear/settings.py	/^BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))$/;"	kind:variable	line:19
+Cloth	../clothes/models.py	/^class Cloth(models.Model):$/;"	kind:class	line:8
+Cloth	../clothes/views.py	/^from .models import Cloth$/;"	kind:namespace	line:7
+Cloth	../csv/csvimport.py	/^from .clothes.models import Cloth $/;"	kind:namespace	line:2
+ClothesComment	../clothes/models.py	/^class ClothesComment(models.Model):$/;"	kind:class	line:30
+ClothesComment	../weather/models.py	/^from clothes.models import ClothesIcon, ClothesComment$/;"	kind:namespace	line:2
+ClothesConfig	../clothes/apps.py	/^class ClothesConfig(AppConfig):$/;"	kind:class	line:4
+ClothesIcon	../clothes/models.py	/^class ClothesIcon(models.Model):$/;"	kind:class	line:24
+ClothesIcon	../weather/models.py	/^from clothes.models import ClothesIcon, ClothesComment$/;"	kind:namespace	line:2
+ClothesRecom	../clothes/views.py	/^class ClothesRecom(View):$/;"	kind:class	line:36
+ClothesRecom	../weather/views.py	/^from clothes.views import ClothesRecom $/;"	kind:namespace	line:7
+CredentialView	../user/urls.py	/^from .views import CredentialView, UserSettingUpdateView, UserSettingView$/;"	kind:namespace	line:6
+CredentialView	../user/views.py	/^class CredentialView(View):$/;"	kind:class	line:46
+DATABASES	../my_settings.py	/^DATABASES = {$/;"	kind:variable	line:1
+DATABASES	../whattowear/settings.py	/^DATABASES = my_settings.DATABASES$/;"	kind:variable	line:84
+DEBUG	../whattowear/settings.py	/^DEBUG = True$/;"	kind:variable	line:31
+Enum	../clothes/models.py	/^from enum import Enum          $/;"	kind:namespace	line:2
+Enum	../user/models.py	/^from enum import Enum$/;"	kind:namespace	line:2
+FEMALE	../user/models.py	/^    FEMALE = 'F'$/;"	kind:variable	line:6
+Gender	../clothes/models.py	/^from user.models import Gender$/;"	kind:namespace	line:5
+Gender	../user/models.py	/^class Gender(Enum):$/;"	kind:class	line:4
+GetWeatherInfo	../weather/tests/test_views.py	/^from ..views import GetWeatherInfo$/;"	kind:namespace	line:2
+GetWeatherInfo	../weather/urls.py	/^from .views import GetWeatherInfo$/;"	kind:namespace	line:2
+GetWeatherInfo	../weather/views.py	/^class GetWeatherInfo(View):$/;"	kind:class	line:12
+HeartView	../clothes/urls.py	/^from .views import HeartView    $/;"	kind:namespace	line:4
+HeartView	../clothes/views.py	/^class HeartView(View):$/;"	kind:class	line:10
+HttpResponse	../clothes/views.py	/^from django.http import JsonResponse, HttpResponse$/;"	kind:namespace	line:4
+HttpResponse	../user/utils.py	/^from django.http import JsonResponse, HttpResponse$/;"	kind:namespace	line:4
+HttpResponse	../user/views.py	/^from django.http import JsonResponse, HttpResponse$/;"	kind:namespace	line:6
+INSTALLED_APPS	../whattowear/settings.py	/^INSTALLED_APPS = [$/;"	kind:variable	line:38
+JsonResponse	../clothes/views.py	/^from django.http import JsonResponse, HttpResponse$/;"	kind:namespace	line:4
+JsonResponse	../user/utils.py	/^from django.http import JsonResponse, HttpResponse$/;"	kind:namespace	line:4
+JsonResponse	../user/views.py	/^from django.http import JsonResponse, HttpResponse$/;"	kind:namespace	line:6
+JsonResponse	../weather/views.py	/^from django.http import JsonResponse$/;"	kind:namespace	line:6
+LANGUAGE_CODE	../whattowear/settings.py	/^LANGUAGE_CODE = 'en-us'$/;"	kind:variable	line:116
+MALE	../user/models.py	/^    MALE = 'M'$/;"	kind:variable	line:5
+MIDDLEWARE	../whattowear/settings.py	/^MIDDLEWARE = [$/;"	kind:variable	line:50
+Meta	../clothes/models.py	/^    class Meta:                $/;"	kind:class	line:21
+Meta	../clothes/models.py	/^    class Meta:$/;"	kind:class	line:27
+Meta	../clothes/models.py	/^    class Meta:$/;"	kind:class	line:34
+Meta	../user/models.py	/^    class Meta:$/;"	kind:class	line:17
+Meta	../user/models.py	/^    class Meta:$/;"	kind:class	line:26
+Meta	../weather/models.py	/^    class Meta:$/;"	kind:class	line:11
+Migration	../clothes/migrations/0001_initial.py	/^class Migration(migrations.Migration):$/;"	kind:class	line:7
+Migration	../clothes/migrations/0002_clothescomment_clothesicon.py	/^class Migration(migrations.Migration):$/;"	kind:class	line:6
+Migration	../user/migrations/0001_initial.py	/^class Migration(migrations.Migration):$/;"	kind:class	line:7
+Migration	../user/migrations/0002_auto_20190430_0803.py	/^class Migration(migrations.Migration):$/;"	kind:class	line:6
+Migration	../user/migrations/0003_remove_user_user_gender.py	/^class Migration(migrations.Migration):$/;"	kind:class	line:6
+Migration	../user/migrations/0004_user_user_gender.py	/^class Migration(migrations.Migration):$/;"	kind:class	line:7
+Migration	../user/migrations/0005_auto_20190507_0757.py	/^class Migration(migrations.Migration):$/;"	kind:class	line:6
+Migration	../user/migrations/0005_useroption.py	/^class Migration(migrations.Migration):$/;"	kind:class	line:7
+Migration	../user/migrations/0006_auto_20190507_0936.py	/^class Migration(migrations.Migration):$/;"	kind:class	line:6
+Migration	../user/migrations/0007_merge_20190507_1128.py	/^class Migration(migrations.Migration):$/;"	kind:class	line:6
+MyTest	../weather/tests/test_views.py	/^class MyTest(unittest.TestCase):$/;"	kind:class	line:4
+ObjectDoesNotExist	../user/views.py	/^from django.core.exceptions import ObjectDoesNotExist$/;"	kind:namespace	line:7
+ROOT_URLCONF	../whattowear/settings.py	/^ROOT_URLCONF = 'whattowear.urls'$/;"	kind:variable	line:60
+SECRET_KEY	../whattowear/settings.py	/^SECRET_KEY = '41x4l-g71+#6naf&yn*#*pig@$f724=z-y7q1o!vrh+p6g0zo_'$/;"	kind:variable	line:26
+STATIC_URL	../whattowear/settings.py	/^STATIC_URL = '\/static\/'$/;"	kind:variable	line:130
+TEMPLATES	../whattowear/settings.py	/^TEMPLATES = [$/;"	kind:variable	line:62
+TIME_ZONE	../whattowear/settings.py	/^TIME_ZONE = 'UTC'$/;"	kind:variable	line:118
+TemperatureCriteria	../weather/models.py	/^class TemperatureCriteria(models.Model):$/;"	kind:class	line:4
+TestCase	../clothes/tests.py	/^from django.test import TestCase$/;"	kind:namespace	line:1
+TestCase	../user/tests.py	/^from django.test import TestCase$/;"	kind:namespace	line:1
+USE_I18N	../whattowear/settings.py	/^USE_I18N = True$/;"	kind:variable	line:120
+USE_L10N	../whattowear/settings.py	/^USE_L10N = True$/;"	kind:variable	line:122
+USE_TZ	../whattowear/settings.py	/^USE_TZ = True$/;"	kind:variable	line:124
+User	../clothes/models.py	/^from user.models import User$/;"	kind:namespace	line:4
+User	../clothes/views.py	/^from user.models import User$/;"	kind:namespace	line:6
+User	../user/models.py	/^class User(models.Model):$/;"	kind:class	line:12
+User	../user/utils.py	/^from .models import User$/;"	kind:namespace	line:6
+User	../user/views.py	/^from .models import User, UserOption$/;"	kind:namespace	line:9
+User	../weather/views.py	/^from user.models import User, UserOption$/;"	kind:namespace	line:9
+UserConfig	../user/apps.py	/^class UserConfig(AppConfig):$/;"	kind:class	line:4
+UserOption	../user/models.py	/^class UserOption(models.Model):$/;"	kind:class	line:20
+UserOption	../user/views.py	/^from .models import User, UserOption$/;"	kind:namespace	line:9
+UserOption	../weather/views.py	/^from user.models import User, UserOption$/;"	kind:namespace	line:9
+UserSettingUpdateView	../user/urls.py	/^from .views import CredentialView, UserSettingUpdateView, UserSettingView$/;"	kind:namespace	line:6
+UserSettingUpdateView	../user/views.py	/^class UserSettingUpdateView(View):$/;"	kind:class	line:107
+UserSettingView	../user/urls.py	/^from .views import CredentialView, UserSettingUpdateView, UserSettingView$/;"	kind:namespace	line:6
+UserSettingView	../user/views.py	/^class UserSettingView(View):$/;"	kind:class	line:95
+UserView	../user/urls.py	/^from .views import UserView$/;"	kind:namespace	line:4
+UserView	../user/views.py	/^class UserView(View):$/;"	kind:class	line:13
+View	../clothes/views.py	/^from django.views import View$/;"	kind:namespace	line:3
+View	../user/views.py	/^from django.views import View$/;"	kind:namespace	line:5
+View	../weather/views.py	/^from django.views import View$/;"	kind:namespace	line:5
+WSGI_APPLICATION	../whattowear/settings.py	/^WSGI_APPLICATION = 'whattowear.wsgi.application'$/;"	kind:variable	line:78
+WeatherConfig	../weather/apps.py	/^class WeatherConfig(AppConfig):$/;"	kind:class	line:4
+__init__.py	../clothes/__init__.py	1;"	kind:file	line:1
+__init__.py	../clothes/migrations/__init__.py	1;"	kind:file	line:1
+__init__.py	../user/__init__.py	1;"	kind:file	line:1
+__init__.py	../user/migrations/__init__.py	1;"	kind:file	line:1
+__init__.py	../weather/__init__.py	1;"	kind:file	line:1
+__init__.py	../weather/tests/__init__.py	1;"	kind:file	line:1
+__init__.py	../whattowear/__init__.py	1;"	kind:file	line:1
+adjust_temp	../weather/views.py	/^    def adjust_temp(temp_id):$/;"	kind:member	line:80
+admin	../clothes/admin.py	/^from django.contrib import admin$/;"	kind:namespace	line:1
+admin	../user/admin.py	/^from django.contrib import admin$/;"	kind:namespace	line:1
+admin	../weather/admin.py	/^from django.contrib import admin$/;"	kind:namespace	line:1
+admin.py	../clothes/admin.py	1;"	kind:file	line:1
+admin.py	../user/admin.py	1;"	kind:file	line:1
+admin.py	../weather/admin.py	1;"	kind:file	line:1
+application	../whattowear/wsgi.py	/^application = get_wsgi_application()$/;"	kind:variable	line:16
+apps.py	../clothes/apps.py	1;"	kind:file	line:1
+apps.py	../user/apps.py	1;"	kind:file	line:1
+apps.py	../weather/apps.py	1;"	kind:file	line:1
+bcrypt	../user/views.py	/^import bcrypt                  $/;"	kind:namespace	line:3
+choices	../user/models.py	/^    def choices(cls):$/;"	kind:member	line:9
+clothes	../weather/models.py	/^    clothes = models.ManyToManyField(ClothesIcon)$/;"	kind:variable	line:8
+clothes_comment	../clothes/models.py	/^    clothes_comment = models.CharField(max_length=100)$/;"	kind:variable	line:31
+clothes_comments	../weather/models.py	/^    clothes_comments = models.ManyToManyField(ClothesComment)$/;"	kind:variable	line:9
+clothes_des	../clothes/models.py	/^    clothes_des = models.CharField(max_length=40)$/;"	kind:variable	line:25
+clothes_gender	../clothes/models.py	/^    clothes_gender = models.CharField(max_length=20, default='')$/;"	kind:variable	line:32
+csv	../csv/csvimport.py	/^import csv$/;"	kind:namespace	line:1
+csvimport.py	../csv/csvimport.py	1;"	kind:file	line:1
+db	../user/migrations/0005_useroption.py	/^import django.db.models.deletion$/;"	kind:namespace	line:4
+db_table	../clothes/models.py	/^        db_table = "clothes"$/;"	kind:variable	line:22
+db_table	../clothes/models.py	/^        db_table = "clothes_comment"$/;"	kind:variable	line:35
+db_table	../clothes/models.py	/^        db_table = "clothes_icon"$/;"	kind:variable	line:28
+db_table	../user/models.py	/^        db_table = "users"$/;"	kind:variable	line:18
+db_table	../user/models.py	/^        db_table = "users_option"$/;"	kind:variable	line:27
+db_table	../weather/models.py	/^        db_table = "temperature"$/;"	kind:variable	line:13
+deletion	../user/migrations/0005_useroption.py	/^import django.db.models.deletion$/;"	kind:namespace	line:4
+dependencies	../clothes/migrations/0001_initial.py	/^    dependencies = [$/;"	kind:variable	line:11
+dependencies	../clothes/migrations/0002_clothescomment_clothesicon.py	/^    dependencies = [$/;"	kind:variable	line:8
+dependencies	../user/migrations/0001_initial.py	/^    dependencies = [$/;"	kind:variable	line:11
+dependencies	../user/migrations/0002_auto_20190430_0803.py	/^    dependencies = [$/;"	kind:variable	line:8
+dependencies	../user/migrations/0003_remove_user_user_gender.py	/^    dependencies = [$/;"	kind:variable	line:8
+dependencies	../user/migrations/0004_user_user_gender.py	/^    dependencies = [$/;"	kind:variable	line:9
+dependencies	../user/migrations/0005_auto_20190507_0757.py	/^    dependencies = [$/;"	kind:variable	line:8
+dependencies	../user/migrations/0005_useroption.py	/^    dependencies = [$/;"	kind:variable	line:9
+dependencies	../user/migrations/0006_auto_20190507_0936.py	/^    dependencies = [$/;"	kind:variable	line:8
+dependencies	../user/migrations/0007_merge_20190507_1128.py	/^    dependencies = [$/;"	kind:variable	line:8
+django	../user/migrations/0005_useroption.py	/^import django.db.models.deletion$/;"	kind:namespace	line:4
+execute_from_command_line	../manage.py	/^        from django.core.management import execute_from_command_line$/;"	kind:namespace	line:10
+field	../user/migrations/0004_user_user_gender.py	/^            field=models.CharField(choices=[(user.models.Gender('M'), 'M'), (user.models.Gender('F'), 'F')], default=2, max_length=3),$/;"	kind:variable	line:17
+field	../user/migrations/0005_auto_20190507_0757.py	/^            field=models.CharField(max_length=100),$/;"	kind:variable	line:16
+fields	../clothes/migrations/0001_initial.py	/^            fields=[$/;"	kind:variable	line:18
+fields	../clothes/migrations/0002_clothescomment_clothesicon.py	/^            fields=[$/;"	kind:variable	line:15
+fields	../clothes/migrations/0002_clothescomment_clothesicon.py	/^            fields=[$/;"	kind:variable	line:26
+fields	../user/migrations/0001_initial.py	/^            fields=[$/;"	kind:variable	line:17
+fields	../user/migrations/0005_useroption.py	/^            fields=[$/;"	kind:variable	line:16
+get	../clothes/views.py	/^    def get(self, request):$/;"	kind:member	line:29
+get	../user/views.py	/^    def get(self, request):$/;"	kind:member	line:41
+get	../user/views.py	/^    def get(self, request):$/;"	kind:member	line:98
+get_address	../weather/views.py	/^    def get_address(latitude,longitude):$/;"	kind:member	line:67
+get_clothesicon_list	../clothes/views.py	/^    def get_clothesicon_list(temp_id):$/;"	kind:member	line:38
+get_temp_id	../weather/views.py	/^    def get_temp_id(cur_temp):$/;"	kind:member	line:43
+get_weather_comments	../clothes/views.py	/^    def get_weather_comments(temp_id):$/;"	kind:member	line:53
+get_wsgi_application	../whattowear/wsgi.py	/^from django.core.wsgi import get_wsgi_application$/;"	kind:namespace	line:12
+hate_cold	../user/models.py	/^    hate_cold = models.BooleanField()$/;"	kind:variable	line:22
+hate_hot	../user/models.py	/^    hate_hot = models.BooleanField()$/;"	kind:variable	line:21
+hearts	../clothes/models.py	/^    hearts      = models.ManyToManyField(User, related_name='hearts')$/;"	kind:variable	line:15
+img_ref	../clothes/models.py	/^    img_ref     = models.CharField(max_length=200)$/;"	kind:variable	line:11
+include	../whattowear/urls.py	/^from django.urls import include, path$/;"	kind:namespace	line:1
+initial	../clothes/migrations/0001_initial.py	/^    initial = True$/;"	kind:variable	line:9
+initial	../user/migrations/0001_initial.py	/^    initial = True$/;"	kind:variable	line:9
+item_id	../clothes/models.py	/^    item_id     = models.CharField(max_length=200) $/;"	kind:variable	line:9
+json	../clothes/views.py	/^import json$/;"	kind:namespace	line:1
+json	../user/utils.py	/^import json$/;"	kind:namespace	line:2
+json	../user/views.py	/^import json$/;"	kind:namespace	line:2
+json	../weather/views.py	/^import json$/;"	kind:namespace	line:2
+jwt	../user/utils.py	/^import jwt$/;"	kind:namespace	line:1
+jwt	../user/views.py	/^import jwt$/;"	kind:namespace	line:1
+login_decorator	../clothes/views.py	/^from user.utils import login_decorator$/;"	kind:namespace	line:8
+login_decorator	../user/utils.py	/^def login_decorator(f):        $/;"	kind:function	line:9
+login_decorator	../user/views.py	/^from .utils import login_decorator$/;"	kind:namespace	line:10
+main	../csv/csvimport.py	/^def main():$/;"	kind:function	line:4
+main	../manage.py	/^def main():$/;"	kind:function	line:7
+manage.py	../manage.py	1;"	kind:file	line:1
+migrations	../clothes/migrations/0001_initial.py	/^from django.db import migrations, models$/;"	kind:namespace	line:3
+migrations	../clothes/migrations/0002_clothescomment_clothesicon.py	/^from django.db import migrations, models$/;"	kind:namespace	line:3
+migrations	../user/migrations/0001_initial.py	/^from django.db import migrations, models$/;"	kind:namespace	line:3
+migrations	../user/migrations/0002_auto_20190430_0803.py	/^from django.db import migrations$/;"	kind:namespace	line:3
+migrations	../user/migrations/0003_remove_user_user_gender.py	/^from django.db import migrations$/;"	kind:namespace	line:3
+migrations	../user/migrations/0004_user_user_gender.py	/^from django.db import migrations, models$/;"	kind:namespace	line:3
+migrations	../user/migrations/0005_auto_20190507_0757.py	/^from django.db import migrations, models$/;"	kind:namespace	line:3
+migrations	../user/migrations/0005_useroption.py	/^from django.db import migrations, models$/;"	kind:namespace	line:3
+migrations	../user/migrations/0006_auto_20190507_0936.py	/^from django.db import migrations$/;"	kind:namespace	line:3
+migrations	../user/migrations/0007_merge_20190507_1128.py	/^from django.db import migrations$/;"	kind:namespace	line:3
+model_name	../user/migrations/0003_remove_user_user_gender.py	/^            model_name='user',$/;"	kind:variable	line:14
+model_name	../user/migrations/0004_user_user_gender.py	/^            model_name='user',$/;"	kind:variable	line:15
+model_name	../user/migrations/0005_auto_20190507_0757.py	/^            model_name='user',$/;"	kind:variable	line:14
+model_name	../user/migrations/0006_auto_20190507_0936.py	/^            model_name='useroption',$/;"	kind:variable	line:14
+model_name	../user/migrations/0006_auto_20190507_0936.py	/^            model_name='useroption',$/;"	kind:variable	line:19
+models	../clothes/migrations/0001_initial.py	/^from django.db import migrations, models$/;"	kind:namespace	line:3
+models	../clothes/migrations/0001_initial.py	/^import user.models$/;"	kind:namespace	line:4
+models	../clothes/migrations/0002_clothescomment_clothesicon.py	/^from django.db import migrations, models$/;"	kind:namespace	line:3
+models	../clothes/models.py	/^from django.db import models$/;"	kind:namespace	line:1
+models	../user/migrations/0001_initial.py	/^from django.db import migrations, models$/;"	kind:namespace	line:3
+models	../user/migrations/0001_initial.py	/^import user.models$/;"	kind:namespace	line:4
+models	../user/migrations/0004_user_user_gender.py	/^from django.db import migrations, models$/;"	kind:namespace	line:3
+models	../user/migrations/0004_user_user_gender.py	/^import user.models$/;"	kind:namespace	line:4
+models	../user/migrations/0005_auto_20190507_0757.py	/^from django.db import migrations, models$/;"	kind:namespace	line:3
+models	../user/migrations/0005_useroption.py	/^from django.db import migrations, models$/;"	kind:namespace	line:3
+models	../user/migrations/0005_useroption.py	/^import django.db.models.deletion$/;"	kind:namespace	line:4
+models	../user/models.py	/^from django.db import models$/;"	kind:namespace	line:1
+models	../weather/models.py	/^from django.db import models$/;"	kind:namespace	line:1
+models.py	../clothes/models.py	1;"	kind:file	line:1
+models.py	../user/models.py	1;"	kind:file	line:1
+models.py	../weather/models.py	1;"	kind:file	line:1
+my_settings	../whattowear/settings.py	/^import my_settings$/;"	kind:namespace	line:16
+my_settings.py	../my_settings.py	1;"	kind:file	line:1
+name	../clothes/apps.py	/^    name = 'clothes'$/;"	kind:variable	line:5
+name	../clothes/migrations/0001_initial.py	/^            name='Cloth',$/;"	kind:variable	line:17
+name	../clothes/migrations/0002_clothescomment_clothesicon.py	/^            name='ClothesComment',$/;"	kind:variable	line:14
+name	../clothes/migrations/0002_clothescomment_clothesicon.py	/^            name='ClothesIcon',$/;"	kind:variable	line:25
+name	../user/apps.py	/^    name = 'user'$/;"	kind:variable	line:5
+name	../user/migrations/0001_initial.py	/^            name='User',$/;"	kind:variable	line:16
+name	../user/migrations/0002_auto_20190430_0803.py	/^            name='user',$/;"	kind:variable	line:14
+name	../user/migrations/0003_remove_user_user_gender.py	/^            name='user_gender',$/;"	kind:variable	line:15
+name	../user/migrations/0004_user_user_gender.py	/^            name='user_gender',$/;"	kind:variable	line:16
+name	../user/migrations/0005_auto_20190507_0757.py	/^            name='user_password',$/;"	kind:variable	line:15
+name	../user/migrations/0005_useroption.py	/^            name='UserOption',$/;"	kind:variable	line:15
+name	../weather/apps.py	/^    name = 'weather'$/;"	kind:variable	line:5
+new_name	../user/migrations/0006_auto_20190507_0936.py	/^            new_name='hate_cold',$/;"	kind:variable	line:16
+new_name	../user/migrations/0006_auto_20190507_0936.py	/^            new_name='hate_hot',$/;"	kind:variable	line:21
+old_name	../user/migrations/0006_auto_20190507_0936.py	/^            old_name='HATECOLD',$/;"	kind:variable	line:15
+old_name	../user/migrations/0006_auto_20190507_0936.py	/^            old_name='HATEHOT',$/;"	kind:variable	line:20
+operations	../clothes/migrations/0001_initial.py	/^    operations = [$/;"	kind:variable	line:15
+operations	../clothes/migrations/0002_clothescomment_clothesicon.py	/^    operations = [$/;"	kind:variable	line:12
+operations	../user/migrations/0001_initial.py	/^    operations = [$/;"	kind:variable	line:14
+operations	../user/migrations/0002_auto_20190430_0803.py	/^    operations = [$/;"	kind:variable	line:12
+operations	../user/migrations/0003_remove_user_user_gender.py	/^    operations = [$/;"	kind:variable	line:12
+operations	../user/migrations/0004_user_user_gender.py	/^    operations = [$/;"	kind:variable	line:13
+operations	../user/migrations/0005_auto_20190507_0757.py	/^    operations = [$/;"	kind:variable	line:12
+operations	../user/migrations/0005_useroption.py	/^    operations = [$/;"	kind:variable	line:13
+operations	../user/migrations/0006_auto_20190507_0936.py	/^    operations = [$/;"	kind:variable	line:12
+operations	../user/migrations/0007_merge_20190507_1128.py	/^    operations = [$/;"	kind:variable	line:13
+options	../clothes/migrations/0001_initial.py	/^            options={$/;"	kind:variable	line:28
+options	../clothes/migrations/0002_clothescomment_clothesicon.py	/^            options={$/;"	kind:variable	line:20
+options	../clothes/migrations/0002_clothescomment_clothesicon.py	/^            options={$/;"	kind:variable	line:30
+options	../user/migrations/0005_useroption.py	/^            options={$/;"	kind:variable	line:22
+ordering	../weather/models.py	/^        ordering = ('temp_id',)$/;"	kind:variable	line:12
+os	../manage.py	/^import os$/;"	kind:namespace	line:3
+os	../whattowear/settings.py	/^import os$/;"	kind:namespace	line:13
+os	../whattowear/wsgi.py	/^import os$/;"	kind:namespace	line:10
+page_ref	../clothes/models.py	/^    page_ref    = models.CharField(max_length=200)$/;"	kind:variable	line:12
+path	../clothes/urls.py	/^from django.urls import path   $/;"	kind:namespace	line:1
+path	../user/urls.py	/^from django.urls import path$/;"	kind:namespace	line:1
+path	../weather/urls.py	/^from django.urls import path$/;"	kind:namespace	line:1
+path	../whattowear/urls.py	/^from django.urls import include, path$/;"	kind:namespace	line:1
+post	../clothes/views.py	/^    def post(self, request):$/;"	kind:member	line:13
+post	../user/views.py	/^    def post(self, request):$/;"	kind:member	line:110
+post	../user/views.py	/^    def post(self, request):$/;"	kind:member	line:15
+post	../user/views.py	/^    def post(self, request):$/;"	kind:member	line:49
+post	../user/views.py	/^    def post(self, request):$/;"	kind:member	line:77
+post	../weather/views.py	/^    def post(self, request):$/;"	kind:member	line:14
+preserve_default	../user/migrations/0004_user_user_gender.py	/^            preserve_default=False,$/;"	kind:variable	line:18
+render	../weather/views.py	/^from django.shortcuts import render$/;"	kind:namespace	line:4
+requests	../weather/views.py	/^import requests$/;"	kind:namespace	line:1
+secrets	../whattowear/settings.py	/^import secrets$/;"	kind:namespace	line:14
+settings.py	../whattowear/settings.py	1;"	kind:file	line:1
+sys	../manage.py	/^import sys$/;"	kind:namespace	line:4
+table	../user/migrations/0002_auto_20190430_0803.py	/^            table='users',$/;"	kind:variable	line:15
+temp_id	../weather/models.py	/^    temp_id = models.IntegerField()$/;"	kind:variable	line:5
+temp_max	../clothes/models.py	/^    temp_max    = models.CharField(max_length=20)$/;"	kind:variable	line:14
+temp_max	../weather/models.py	/^    temp_max = models.IntegerField()$/;"	kind:variable	line:7
+temp_min	../clothes/models.py	/^    temp_min    = models.CharField(max_length=20)$/;"	kind:variable	line:13
+temp_min	../weather/models.py	/^    temp_min = models.IntegerField()$/;"	kind:variable	line:6
+test_get_clothes_list	../weather/tests/test_views.py	/^    def test_get_clothes_list(self):$/;"	kind:member	line:10
+test_get_temp_id	../weather/tests/test_views.py	/^    def test_get_temp_id(self):$/;"	kind:member	line:6
+test_views.py	../weather/tests/test_views.py	1;"	kind:file	line:1
+tests.py	../clothes/tests.py	1;"	kind:file	line:1
+tests.py	../user/tests.py	1;"	kind:file	line:1
+total_hearts	../clothes/models.py	/^    def total_hearts(self):$/;"	kind:member	line:18
+unittest	../weather/tests/test_views.py	/^import unittest$/;"	kind:namespace	line:1
+urlpatterns	../clothes/urls.py	/^urlpatterns = [$/;"	kind:variable	line:6
+urlpatterns	../user/urls.py	/^urlpatterns = [$/;"	kind:variable	line:8
+urlpatterns	../weather/urls.py	/^urlpatterns = [$/;"	kind:variable	line:4
+urlpatterns	../whattowear/urls.py	/^urlpatterns = [$/;"	kind:variable	line:3
+urls.py	../clothes/urls.py	1;"	kind:file	line:1
+urls.py	../user/urls.py	1;"	kind:file	line:1
+urls.py	../weather/urls.py	1;"	kind:file	line:1
+urls.py	../whattowear/urls.py	1;"	kind:file	line:1
+user	../clothes/migrations/0001_initial.py	/^import user.models$/;"	kind:namespace	line:4
+user	../user/migrations/0001_initial.py	/^import user.models$/;"	kind:namespace	line:4
+user	../user/migrations/0004_user_user_gender.py	/^import user.models$/;"	kind:namespace	line:4
+user	../user/models.py	/^    user = models.ForeignKey(User, on_delete=models.CASCADE)$/;"	kind:variable	line:23
+user_gender	../clothes/models.py	/^    user_gender = models.CharField(max_length=3, choices = Gender.choices())$/;"	kind:variable	line:10
+user_gender	../user/models.py	/^    user_gender = models.CharField(max_length=3, choices = Gender.choices())$/;"	kind:variable	line:15
+user_name	../user/models.py	/^    user_name = models.CharField(max_length=20)$/;"	kind:variable	line:13
+user_password	../user/models.py	/^    user_password = models.CharField(max_length=100)$/;"	kind:variable	line:14
+utils.py	../user/utils.py	1;"	kind:file	line:1
+views	../clothes/urls.py	/^from . import views$/;"	kind:namespace	line:3
+views	../user/urls.py	/^from . import views$/;"	kind:namespace	line:3
+views.py	../clothes/views.py	1;"	kind:file	line:1
+views.py	../user/views.py	1;"	kind:file	line:1
+views.py	../weather/views.py	1;"	kind:file	line:1
+wrapper	../user/utils.py	/^    def wrapper(self, request, *args, **kwargs):$/;"	kind:function	line:10
+wsgi.py	../whattowear/wsgi.py	1;"	kind:file	line:1
+wtwt_secret	../user/utils.py	/^from whattowear.settings import wtwt_secret$/;"	kind:namespace	line:7
+wtwt_secret	../user/views.py	/^from whattowear.settings import wtwt_secret$/;"	kind:namespace	line:11
+wtwt_secret	../whattowear/settings.py	/^wtwt_secret = '58a1e460c937e1b1b010aaf6e2362c2e4f425303'$/;"	kind:variable	line:27

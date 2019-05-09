@@ -12,7 +12,8 @@ class Cloth(models.Model):
     page_ref    = models.CharField(max_length=2500)
     temp_min    = models.CharField(max_length=20)
     temp_max    = models.CharField(max_length=20)
-    hearts      = models.ManyToManyField(User, related_name='hearts')
+    hearts      = models.ManyToManyField(User, through='HeartTime', related_name='hearts')
+
 
     @property
     def total_hearts(self):
@@ -33,4 +34,12 @@ class ClothesComment(models.Model):
 
     class Meta:
         db_table = "clothes_comment"
+
+class HeartTime(models.Model):
+    cloth = models.ForeignKey(Cloth, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    heart_time = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        db_table = "heart_time"
 

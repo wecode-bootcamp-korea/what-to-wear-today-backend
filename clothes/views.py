@@ -1,10 +1,11 @@
 import json
+from operator import itemgetter
 
 from django.views import View
 from django.http import JsonResponse, HttpResponse
 
 from user.models import User
-from .models import Cloth
+from .models import Cloth, HeartTime
 from user.utils import login_decorator
 
 class HeartView(View):
@@ -13,25 +14,32 @@ class HeartView(View):
     def post(self, request):
         user     = request.user
         cloth    = json.loads(request.body)
-        cloth_id = cloth['id']
+        cloth_id = cloth['img_id']
         cloth    = Cloth.objects.get(id = cloth_id)
 
         if cloth.hearts.filter(id = user.id).exists():
             cloth.hearts.remove(user)
-            message = 'Unheart cloth'
+            heart_cloth = False
         else:
             cloth.hearts.add(user)
-            message = 'Heart cloth'
+            heart_cloth = True
 
-        return JsonResponse({"hearts_count" : cloth.total_hearts, "message" : message})
+        return JsonResponse({"total_hearts" : cloth.total_hearts, "heart_cloth" : heart_cloth})
     
     @login_decorator
     def get(self, request):
         user        = request.user
-        hearts_list = list(Cloth.objects.filter(hearts__id=user.id).values('pk'))
-        cloth_id    = [d['pk'] for d in hearts_list]
+        hearts      = HeartTime.objects.filter(user_id=user.id).values('cloth_id','heart_time').order_by('-heart_time')
+        hearts_list = list(hearts)
+        cloth_id    = [
+            {
+                'img_id' : d['cloth_id'], 
+                'img_ref' : Cloth.objects.get(id = d['cloth_id']).img_ref,
+                'total_hearts' : Cloth.objects.get(id = d['cloth_id']).total_hearts
+            } for d in hearts_list
+        ]
 
-        return JsonResponse({'cloth_id' : list(reversed(cloth_id))})
+        return JsonResponse({'hearts_list' : cloth_id})
 
 class ClothesRecom(View):
 
@@ -64,3 +72,22 @@ class ClothesRecom(View):
         }
 
         return weather_comment[temp_id]
+
+class TopImageView(View):
+
+    def get(self, request):
+        number            = json.loads(request.body)
+        top_number        = number['top_number']
+        hearts_list       = list(Cloth.objects.all().values('hearts__id').values('pk').distinct())
+        total_hearts_list = [
+                {
+                    "img_id" : d['pk'],
+                    "total_hearts" : Cloth.objects.get(id = d['pk']).total_hearts
+                } for d in hearts_list
+        ]
+        data              = sorted(total_hearts_list, key = itemgetter('total_hearts'))
+        data.reverse()
+        
+        top = data[0 : min(int(top_number),len(data))]
+        
+        return JsonResponse({'top_list' : top})

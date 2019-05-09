@@ -5,7 +5,7 @@ from django.views import View
 from django.http import JsonResponse, HttpResponse
 
 from user.models import User
-from .models import Cloth
+from .models import Cloth, HeartTime
 from user.utils import login_decorator
 
 class HeartView(View):
@@ -17,11 +17,11 @@ class HeartView(View):
         cloth_id = cloth['img_id']
         cloth    = Cloth.objects.get(id = cloth_id)
 
-        if cloth.hearts.filter(id = user.id).exists():
-            cloth.hearts.remove(user)
+        if cloth.hearts2.filter(id = user.id).exists():
+            cloth.hearts2.remove(user)
             heart_cloth = False
         else:
-            cloth.hearts.add(user)
+            cloth.hearts2.add(user)
             heart_cloth = True
 
         return JsonResponse({"total_hearts" : cloth.total_hearts, "heart_cloth" : heart_cloth})
@@ -29,10 +29,10 @@ class HeartView(View):
     @login_decorator
     def get(self, request):
         user        = request.user
-        hearts_list = list(Cloth.objects.filter(hearts__id=user.id).values('pk', 'img_ref'))
-        cloth_id    = [{'img_id' : d['pk'], 'img_ref' : d['img_ref'], 'total_hearts' : Cloth.objects.get(id = d['pk']).total_hearts} for d in hearts_list]
+        hearts_list = list(HeartTime.objects.filter(user_id=user.id).values('cloth_id','heart_time').order_by('-heart_time'))
+        cloth_id    = [{'img_id' : d['cloth_id'], 'img_ref' : Cloth.objects.get(id = d['cloth_id']).img_ref, 'total_hearts' : Cloth.objects.get(id = d['cloth_id']).total_hearts} for d in hearts_list]
 
-        return JsonResponse({'heart_list' : list(reversed(cloth_id))})
+        return JsonResponse({'hearts_list' : cloth_id})
 
 
 class TopImageView(View):

@@ -76,7 +76,6 @@ class AuthView(View):
     
     def post(self, request):
         login_user = json.loads(request.body)
-
         try: 
             user = User.objects.get(user_name=login_user['user_name'])
             encoded_jwt_id = jwt.encode({'user_id' : user.id}, wtwt_secret, algorithm='HS256')

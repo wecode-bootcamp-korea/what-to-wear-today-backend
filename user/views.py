@@ -33,7 +33,7 @@ class UserView(View):
                 hate_cold = False,
                 user = new_user
             )
-            user_setting.save()
+            user_settings.save()
 
             return JsonResponse({'message' : 'SIGNUP_SUCCESS'}, status=200)
 

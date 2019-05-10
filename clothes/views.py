@@ -76,8 +76,7 @@ class ClothesRecom(View):
 class TopImageView(View):
 
     def get(self, request):
-        number            = json.loads(request.body)
-        top_number        = number['top_number']
+        top_number        = request.GET.get("top_number")
         hearts_list       = list(Cloth.objects.all().values('hearts__id').values('pk').distinct())
         total_hearts_list = [
                 {

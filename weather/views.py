@@ -48,8 +48,8 @@ class WeatherInfo(View):
                     'icon_lists'  : icon_lists,
                     'comment'     : comment,
                     'region_name' : address_get["documents"][0]["address"]['region_2depth_name'],
-                    'clothes_F'   : temp_clothes_F[0], 
-                    'clothes_M'   : temp_clothes_M[0]
+                    'clothes_F'   : random.choice(temp_clothes_F), 
+                    'clothes_M'   : random.choice(temp_clothes_M)
                 }
             )
         

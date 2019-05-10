@@ -1,10 +1,12 @@
-import requests
 import json
+import requests
 import my_settings
 
 from django.shortcuts import render
 from django.views import View
 from django.http import JsonResponse
+
+from clothes.models import Cloth
 from clothes.views import ClothesRecom
 from user.views import *
 from user.models import User, UserOption
@@ -17,28 +19,150 @@ class WeatherInfo(View):
     def post(self, request):
         curl_location = json.loads(request.body)
         location = {
-            'lat': curl_location['lat'],
-            'lon': curl_location['lon'],
+            'lat'  : curl_location['lat'],
+            'lon'  : curl_location['lon'],
             'APPID': my_settings.openweather_key,
-            'lang':'kr',
+            'lang' :'kr',
             'units':'metric'
         }
         url = 'http://api.openweathermap.org/data/2.5/weather'
-        my_response = requests.get(url, params=location, timeout=5).json()
 
+        my_response = requests.get(url, params=location, timeout=5).json()
         address_get = self.get_address(curl_location['lat'], curl_location['lon'])
         
         temp_id_get = self.get_temp_id(my_response["main"]["temp"])
         temp_id_adj = self.adjust_temp(request, temp_id_get) 
-
-        clothes = ClothesRecom()
+        
+        now_temp   = my_response["main"]["temp"]
+        clothes    = ClothesRecom()
         icon_lists = clothes.get_clothesicon_list(temp_id_adj)
-        comment = clothes.get_weather_comments(temp_id_adj)
+        comment    = clothes.get_weather_comments(temp_id_adj)
+
+        temper_filter  = Cloth.objects.filter(temp_max__gte=now_temp).filter(temp_min__lte=now_temp)
+        temp_clothes_F = list(temper_filter.filter(user_gender="F").values('id','img_ref'))
+        temp_clothes_M = list(temper_filter.filter(user_gender="M").values('id','img_ref'))
+
         my_response.update(
                 {
-                    'icon_lists':icon_lists,
-                    'comment':comment,
-                    'region_name':address_get["documents"][0]["address"]['region_2depth_name']
+                    'icon_lists' : icon_lists,
+                    'comment' : comment,
+                    'region_name' : address_get["documents"][0]["address"]['region_2depth_name'],
+                    'clothes_F' : temp_clothes_F[0], 
+                    'clothes_M' : temp_clothes_M[0]
+                }
+            )
+        
+        return JsonResponse(my_response)
+                
+    @login_decorator_pass      
+    def get(self, request):   
+        location = {           
+            'lat'  : request.GET.get("lat"),    
+            'lon'  : request.GET.get("lon"),    
+            'APPID': my_settings.openweather_key,
+            'lang' :'kr',
+            'units':'metric'   
+        }
+        url = 'http://api.openweathermap.org/data/2.5/weather'
+
+        my_response = requests.get(url, params=location, timeout=5).json()
+        address_get = self.get_address(request.GET.get("lat"), request.GET.get("lon"))
+        
+        temp_id_get = self.get_temp_id(my_response["main"]["temp"])
+        temp_id_adj = self.adjust_temp(request, temp_id_get) 
+        
+        now_temp     = my_response["main"]["temp"]
+        clothes      = ClothesRecom()                                                                    
+        icon_lists   = clothes.get_clothesicon_list(temp_id_adj)
+        comment      = clothes.get_weather_comments(temp_id_adj)
+        user_gender  = request.GET.get("user_gender")
+        
+        select_cloth_id = request.GET.get("img_id")
+        select_cloth    = list(Cloth.objects.filter(id = select_cloth_id).values('id','img_ref'))
+
+        if hasattr(request, 'user'):
+            user = request.user
+
+            select_cloth = [
+                {              
+                    "img_id"      : d["id"],        
+                    "img_ref"     : d["img_ref"],   
+                    "heart_check" : Cloth.objects.get(id = d['id']).hearts.filter(id = user.id).exists()                                                                                
+                } for d in select_cloth
+            ]
+            
+            try:
+                user_option = UserOption.objects.get(user=user)
+                if now_temp >= 17 and user_option.hate_hot == True:
+                    now_temp += 5
+                elif now_temp <= 9 and user_option.hate_cold == True:
+                    now_temp -= 5
+            except ObjectDoesNotExist:
+                pass
+
+            temper_filter  = Cloth.objects.filter(temp_max__gte=now_temp).filter(temp_min__lte=now_temp)
+            temp_clothes   = ''
+            temp_clothes_F = list(temper_filter.filter(user_gender="F").values('id','img_ref'))
+            temp_clothes_M = list(temper_filter.filter(user_gender="M").values('id','img_ref'))
+
+            if user.user_gender == "F":
+                temp_clothes = temp_clothes_F
+            elif user.user_gender == "M":
+                temp_clothes = temp_clothes_M
+            else:
+                return JsonResponse({'message' : 'GENDER_NOT_EXIST'}, status=400)
+            
+            my_temp_clothes = [
+                {
+                    "img_id"      : d['id'],
+                    "img_ref"     : d['img_ref'],
+                    "heart_check" : Cloth.objects.get(id = d['id']).hearts.filter(id = user.id).exists()
+                } for d in temp_clothes
+            ]
+            
+            if len(select_cloth) == 0:
+                pass
+            else:
+                my_temp_clothes.insert(0, select_cloth[0])
+        else:
+            temp_clothes   = ''
+            temper_filter  = Cloth.objects.filter(temp_max__gte=now_temp).filter(temp_min__lte=now_temp)
+            temp_clothes_F = list(temper_filter.filter(user_gender="F").values('id','img_ref'))
+            temp_clothes_M = list(temper_filter.filter(user_gender="M").values('id','img_ref'))
+            select_cloth   = [    
+                {              
+                    "img_id"      : d["id"],        
+                    "img_ref"     : d["img_ref"],   
+                    "heart_check" : False                                                                                
+                } for d in select_cloth 
+            ]
+            
+            if user_gender == "F":
+                temp_clothes = temp_clothes_F
+            elif user_gender == "M":
+                temp_clothes = temp_clothes_M
+            else:
+                return JsonResponse({'message' : 'GENDER_INVALID'}, status=400)
+            
+            my_temp_clothes = [
+                {
+                    "img_id"      : d['id'],
+                    "img_ref"     : d['img_ref'],
+                    "heart_check" : False
+                } for d in temp_clothes
+            ]
+
+            if len(select_cloth) == 0:
+                pass
+            else:
+                my_temp_clothes.insert(0, select_cloth[0])
+
+        my_response.update(
+                {
+                    'icon_lists' : icon_lists,
+                    'comment' : comment,
+                    'region_name' : address_get["documents"][0]["address"]['region_2depth_name'],
+                    'clothes_list' : my_temp_clothes[:min(10,len(my_temp_clothes))]
                 }
             )
         

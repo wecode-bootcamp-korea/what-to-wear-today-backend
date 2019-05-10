@@ -37,8 +37,11 @@ class WeatherInfo(View):
         my_response.update(
                 {
                     'icon_lists':icon_lists,
-                    'comment':comment,
-                    'region_name':address_get["documents"][0]["address"]['region_2depth_name']
+                    'comment': comment,
+                    'region_name': address_get["documents"][0]["address"]['region_2depth_name'],
+                    'humid_cat':self.humid_category(my_response),
+                    'wind_cat':self.wind_category(my_response),
+                    'rain_cat':self.rain_category(my_response)
                 }
             )
         
@@ -90,3 +93,37 @@ class WeatherInfo(View):
                 return temp_id
         except: 
             return temp_id
+
+    def rain_category(self, my_response):
+        if 'rain' in my_response:
+            if my_response['rain']['3h'] < 10:
+                return "부슬비"
+            elif 10 <= my_response['rain']['3h'] < 35:
+                return "강한비"
+            else:
+                return "호우주의보"
+        elif 'snow' in my_response:
+            return "눈내림"
+        else:
+            return "없음"
+
+    def humid_category(self, my_response):
+        humidity = my_response['main']['humidity']
+
+        if humidity < 40:
+            return "낮음"
+        elif 40 <= humidity < 60: 
+            return "적정"
+        else:
+            return "높음"
+
+    def wind_category(self, my_response):
+        wind_speed = my_response['wind']['speed']
+
+        if wind_speed < 5.4:
+            return "산들바람"
+        elif 5.4 <= wind_speed < 13.9:
+            return "센바람"
+        else:
+            return "주의보"
+        

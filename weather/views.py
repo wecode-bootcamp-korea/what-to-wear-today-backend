@@ -1,4 +1,5 @@
 import json
+import random
 import requests
 import my_settings
 
@@ -43,11 +44,11 @@ class WeatherInfo(View):
 
         my_response.update(
                 {
-                    'icon_lists' : icon_lists,
-                    'comment' : comment,
+                    'icon_lists'  : icon_lists,
+                    'comment'     : comment,
                     'region_name' : address_get["documents"][0]["address"]['region_2depth_name'],
-                    'clothes_F' : temp_clothes_F[0], 
-                    'clothes_M' : temp_clothes_M[0]
+                    'clothes_F'   : random.choice(temp_clothes_F), 
+                    'clothes_M'   : random.choice(temp_clothes_M)
                 }
             )
         
@@ -119,10 +120,19 @@ class WeatherInfo(View):
                 } for d in temp_clothes
             ]
             
+            random_clothes = random.sample(my_temp_clothes, min(10,len(my_temp_clothes)))
+
             if len(select_cloth) == 0:
                 pass
             else:
-                my_temp_clothes.insert(0, select_cloth[0])
+                for d in random_clothes:
+                    if d.get("img_id") == select_cloth_id:
+                        random_clothes.remove(d)
+                        random_clothes.insert(0, select_cloth[0])
+                        break
+                    else:
+                        random_clothes.insert(0, select_cloth[0])
+                        break
         else:
             temp_clothes   = ''
             temper_filter  = Cloth.objects.filter(temp_max__gte=now_temp).filter(temp_min__lte=now_temp)
@@ -151,20 +161,29 @@ class WeatherInfo(View):
                 } for d in temp_clothes
             ]
 
+            random_clothes = random.sample(my_temp_clothes, min(10,len(my_temp_clothes)))
+
             if len(select_cloth) == 0:
                 pass
             else:
-                my_temp_clothes.insert(0, select_cloth[0])
+                for d in random_clothes:
+                    if d.get("img_id") == select_cloth_id:
+                        random_clothes.remove(d)
+                        random_clothes.insert(0, select_cloth[0])
+                        break
+                    else:
+                        random_clothes.insert(0, select_cloth[0])
+                        break
 
         my_response.update(
                 {
-                    'icon_lists':icon_lists,
-                    'comment': comment,
-                    'region_name': address_get["documents"][0]["address"]['region_2depth_name'],
-                    'humid_cat':self.humid_category(my_response),
-                    'wind_cat':self.wind_category(my_response),
-                    'rain_cat':self.rain_category(my_response),
-                    'clothes_list' : my_temp_clothes[:min(10,len(my_temp_clothes))]
+                    'icon_lists'   : icon_lists,
+                    'comment'      : comment,
+                    'humid_cat'    : self.humid_category(my_response),
+                    'wind_cat'     : self.wind_category(my_response),
+                    'rain_cat'     : self.rain_category(my_response),
+                    'region_name'  : address_get["documents"][0]["address"]['region_2depth_name'],
+                    'clothes_list' : random_clothes
                 }
             )
         

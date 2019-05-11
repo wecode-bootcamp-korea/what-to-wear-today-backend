@@ -100,6 +100,7 @@ class WeatherInfo(View):
             except ObjectDoesNotExist:
                 pass
 
+            user_gender    = user.user_gender
             temper_filter  = Cloth.objects.filter(temp_max__gte=now_temp).filter(temp_min__lte=now_temp)
             temp_clothes   = ''
             temp_clothes_F = list(temper_filter.filter(user_gender="F").values('id','img_ref'))
@@ -142,7 +143,7 @@ class WeatherInfo(View):
                 {              
                     "img_id"      : d["id"],        
                     "img_ref"     : d["img_ref"],   
-                    "heart_check" : False                                                                                
+                    "heart_check" : False                                                                             
                 } for d in select_cloth 
             ]
             

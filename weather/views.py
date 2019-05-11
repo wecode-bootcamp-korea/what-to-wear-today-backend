@@ -30,7 +30,6 @@ class WeatherInfo(View):
 
         my_response = requests.get(url, params=location, timeout=5).json()
         address_get = self.get_address(curl_location['lat'], curl_location['lon'])
-        
         temp_id_get = self.get_temp_id(my_response["main"]["temp"])
         temp_id_adj = self.adjust_temp(request, temp_id_get) 
         
@@ -180,6 +179,9 @@ class WeatherInfo(View):
                 {
                     'icon_lists'   : icon_lists,
                     'comment'      : comment,
+                    'humid_cat'    : self.humid_category(my_response),
+                    'wind_cat'     : self.wind_category(my_response),
+                    'rain_cat'     : self.rain_category(my_response),
                     'region_name'  : address_get["documents"][0]["address"]['region_2depth_name'],
                     'clothes_list' : random_clothes
                 }
@@ -189,19 +191,19 @@ class WeatherInfo(View):
 
     def get_temp_id(self, cur_temp):
 
-        if cur_temp >= 28:
+        if cur_temp >= 27:
             temp_id = 1
-        elif cur_temp >= 23 and cur_temp < 27:
+        elif 23 <= cur_temp < 27:
             temp_id = 2
-        elif cur_temp >= 20 and cur_temp < 23:
+        elif 20 <= cur_temp < 23:
             temp_id = 3
-        elif cur_temp >= 17 and cur_temp < 20:
+        elif 17 <= cur_temp < 20:
             temp_id = 4
-        elif cur_temp >= 12 and cur_temp < 17:
+        elif 12 <= cur_temp < 17:
             temp_id = 5
-        elif cur_temp >= 9 and cur_temp < 12:
+        elif 9 <= cur_temp < 12:
             temp_id = 6
-        elif cur_temp >= 5 and cur_temp < 9:
+        elif 4 <=  cur_temp < 9:
             temp_id = 7
         elif cur_temp < 4:
             temp_id = 8
@@ -233,3 +235,42 @@ class WeatherInfo(View):
                 return temp_id
         except: 
             return temp_id
+
+    def rain_category(self, weather_info):
+        if 'rain' in weather_info:
+            if weather_info['rain']['3h'] < 10:
+                return "부슬비"
+            elif 10 <= weather_info['rain']['3h'] < 35:
+                return "강한비"
+            else:
+                return "호우주의보"
+        elif 'snow' in weather_info:
+            return "눈내림"
+        else:
+            return "없음"
+
+    def humid_category(self, weather_info):
+        try:
+            humidity = weather_info['main']['humidity']
+
+            if humidity < 40:
+                return "낮음"
+            elif 40 <= humidity < 60: 
+                return "적정"
+            else:
+                return "높음"
+        except KeyError:
+            return None
+
+    def wind_category(self, weather_info):
+        try:    
+            wind_speed = weather_info['wind']['speed']
+
+            if wind_speed < 5.4:
+                return "산들바람"
+            elif 5.4 <= wind_speed < 13.9:
+                return "센바람"
+            else:
+                return "주의보"
+        except KeyError:
+            return None

@@ -53,7 +53,44 @@ class WeatherTest(TestCase):
 
         self.assertEqual(response.status_code, 200)
 
+    def test_get_with_user(self):
+        c = Client()
 
+        test1        = {'user_name':'test1', 'user_password':'1234'}
+        response     = c.post('/user/auth', json.dumps(test1), content_type="application/json")
+        test_location= {'lat':37.54, 'lon':127.02}
+        access_token = response.json()['access_token'] 
+        response     = c.get('/weather', test_location, **{'HTTP_AUTHORIZATION':access_token, 'content_type':"application/json"})
+
+        self.assertEqual(response.status_code, 200)
+
+    def test_get_with_user_img(self):
+        c = Client()
+
+        test1        = {'user_name':'test1', 'user_password':'1234'}
+        response     = c.post('/user/auth', json.dumps(test1), content_type="application/json")
+        parameter    = {'lat':37.54, 'lon':127.02, 'img_id':1 }
+        access_token = response.json()['access_token']
+        response     = c.get('/weather', parameter, **{'HTTP_AUTHORIZATION':access_token, 'content_type':"application/json"})
+
+        self.assertEqual(response.status_code, 200)
+    
+    def test_get_without_user(self):
+        c = Client()
+
+        test_location = {'lat':37.54, 'lon':127.02, 'user_gender':'M'}
+        response      = c.get('/weather', test_location, content_type="application/json")
+
+        self.assertEqual(response.status_code, 200)
+   
+    def test_get_without_user_img(self):
+        c = Client()
+
+        parameter    = {'lat':37.54, 'lon':127.02, 'img_id':1, 'user_gender':'M'}
+        response     = c.get('/weather', parameter, content_type="application/json")
+
+        self.assertEqual(response.status_code, 200)
+   
     def tearDown(self):
         Cloth.objects.filter(item_id="111").delete()
         Cloth.objects.filter(item_id="112").delete()

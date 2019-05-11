@@ -1,5 +1,5 @@
 import csv
-import MySQLdb
+import mysql.connector
 import my_settings
 
 from django.db import connection
@@ -9,16 +9,17 @@ db_settings = my_settings.DATABASES
 options = db_settings['default'].get('OPTIONS', None)
 
 if options and 'read_default_file' in options:
-    db = MySQLdb.connect(read_default_file=options['read_default_file'])
+    db = mysql.connector.connect(read_default_file=options['read_default_file'])
 else:
     db_default = db_settings['default']
-    db = MySQLdb.connect(host= db_default.get('HOST'),
+    db = mysql.connector.connect(host= db_default.get('HOST'),
                          user= db_default.get('USER'),
                          passwd= db_default.get('PASSWORD'),
                          db= db_default.get('NAME'))
 
 cursor = db.cursor()
-
+cursor.execute(f"DELETE FROM heart_time")
+cursor.execute(f"DELETE FROM clothes")
 
 with open('merge_data.csv') as csv_files:
     reader = csv.DictReader(csv_files)

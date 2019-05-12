@@ -18,10 +18,20 @@ class WeatherInfo(View):
 
     @login_decorator_pass
     def post(self, request):
-        curl_location = json.loads(request.body)
+        
+        curl_location = {}
+
+        if hasattr(request, 'lat') and hasattr(request, 'lon'):
+            curl_location = json.loads(request.body)
+            lat = curl_location["lat"]
+            lon = curl_location["lon"]
+        else:
+            lat = 37.5665
+            lon = 126.9780 
+
         location = {
-            'lat'  : curl_location['lat'],
-            'lon'  : curl_location['lon'],
+            'lat'  : lat,
+            'lon'  : lon,
             'APPID': my_settings.openweather_key,
             'lang' :'kr',
             'units':'metric'
@@ -29,7 +39,7 @@ class WeatherInfo(View):
         url = 'http://api.openweathermap.org/data/2.5/weather'
 
         my_response = requests.get(url, params=location, timeout=5).json()
-        address_get = self.get_address(curl_location['lat'], curl_location['lon'])
+        address_get = self.get_address(lat,lon)
         temp_id_get = self.get_temp_id(my_response["main"]["temp"])
         temp_id_adj = self.adjust_temp(request, temp_id_get) 
         
@@ -55,10 +65,18 @@ class WeatherInfo(View):
         return JsonResponse(my_response)
                 
     @login_decorator_pass      
-    def get(self, request):   
+    def get(self, request):
+
+        if request.GET.get("lat") == None and request.GET.get("lon") == None:
+            lat = 37.5665
+            lon = 126.9780
+        else:
+            lat = request.GET.get("lat")
+            lon = request.GET.get("lon")
+
         location = {           
-            'lat'  : request.GET.get("lat"),    
-            'lon'  : request.GET.get("lon"),    
+            'lat'  : lat,    
+            'lon'  : lon,    
             'APPID': my_settings.openweather_key,
             'lang' :'kr',
             'units':'metric'   
@@ -66,7 +84,7 @@ class WeatherInfo(View):
         url = 'http://api.openweathermap.org/data/2.5/weather'
 
         my_response = requests.get(url, params=location, timeout=5).json()
-        address_get = self.get_address(request.GET.get("lat"), request.GET.get("lon"))
+        address_get = self.get_address(lat, lon)
         
         temp_id_get = self.get_temp_id(my_response["main"]["temp"])
         temp_id_adj = self.adjust_temp(request, temp_id_get) 

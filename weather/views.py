@@ -99,15 +99,20 @@ class WeatherInfo(View):
                     now_temp -= 5
             except ObjectDoesNotExist:
                 pass
+            
+            if user_gender == None:
+                user_gender = user.user_gender
+            else:
+                pass
 
             temper_filter  = Cloth.objects.filter(temp_max__gte=now_temp).filter(temp_min__lte=now_temp)
             temp_clothes   = ''
             temp_clothes_F = list(temper_filter.filter(user_gender="F").values('id','img_ref'))
             temp_clothes_M = list(temper_filter.filter(user_gender="M").values('id','img_ref'))
 
-            if user.user_gender == "F":
+            if user_gender == "F":
                 temp_clothes = temp_clothes_F
-            elif user.user_gender == "M":
+            elif user_gender == "M":
                 temp_clothes = temp_clothes_M
             else:
                 return JsonResponse({'message' : 'GENDER_NOT_EXIST'}, status=400)
@@ -142,7 +147,7 @@ class WeatherInfo(View):
                 {              
                     "img_id"      : d["id"],        
                     "img_ref"     : d["img_ref"],   
-                    "heart_check" : False                                                                                
+                    "heart_check" : False                                                                             
                 } for d in select_cloth 
             ]
             

@@ -15,10 +15,11 @@ from user.utils import login_decorator_pass
 
 # https://openweathermap.org/current openapi 사용
 class WeatherInfo(View):
+    DEFAULT_LAT_SEOUL=37.5665       
+    DEFAULT_LON_SEOUL=126.9780
 
     @login_decorator_pass
     def post(self, request):
-        
         curl_location = {}
 
         if hasattr(request, 'lat') and hasattr(request, 'lon'):
@@ -26,8 +27,8 @@ class WeatherInfo(View):
             lat = curl_location["lat"]
             lon = curl_location["lon"]
         else:
-            lat = 37.5665
-            lon = 126.9780 
+            lat = self.DEFAULT_LAT_SEOUL
+            lon = self.DEFAULT_LON_SEOUL
 
         location = {
             'lat'  : lat,
@@ -39,7 +40,7 @@ class WeatherInfo(View):
         url = 'http://api.openweathermap.org/data/2.5/weather'
 
         my_response = requests.get(url, params=location, timeout=5).json()
-        address_get = self.get_address(lat,lon)
+        address_get = self.get_address(lat, lon)
         temp_id_get = self.get_temp_id(my_response["main"]["temp"])
         temp_id_adj = self.adjust_temp(request, temp_id_get) 
         
@@ -48,7 +49,8 @@ class WeatherInfo(View):
         icon_lists = clothes.get_clothesicon_list(temp_id_adj)
         comment    = clothes.get_weather_comments(temp_id_adj)
 
-        temper_filter  = Cloth.objects.filter(temp_max__gte=now_temp).filter(temp_min__lte=now_temp)
+        temper_filter  = Cloth.objects.filter(temp_max__gte=now_temp, temp_min__lte=now_temp)
+        
         temp_clothes_F = list(temper_filter.filter(user_gender="F").values('id','img_ref'))
         temp_clothes_M = list(temper_filter.filter(user_gender="M").values('id','img_ref'))
 
@@ -68,8 +70,8 @@ class WeatherInfo(View):
     def get(self, request):
 
         if request.GET.get("lat") == None and request.GET.get("lon") == None:
-            lat = 37.5665
-            lon = 126.9780
+            lat = self.DEFAULT_LAT_SEOUL
+            lon = self.DEFAULT_LON_SEOUL
         else:
             lat = request.GET.get("lat")
             lon = request.GET.get("lon")
@@ -118,7 +120,7 @@ class WeatherInfo(View):
             except ObjectDoesNotExist:
                 pass
 
-            temper_filter  = Cloth.objects.filter(temp_max__gte=now_temp).filter(temp_min__lte=now_temp)
+            temper_filter  = Cloth.objects.filter(temp_max__gte=now_temp, temp_min__lte=now_temp)
             temp_clothes   = ''
             temp_clothes_F = list(temper_filter.filter(user_gender="F").values('id','img_ref'))
             temp_clothes_M = list(temper_filter.filter(user_gender="M").values('id','img_ref'))
@@ -153,7 +155,7 @@ class WeatherInfo(View):
                         break
         else:
             temp_clothes   = ''
-            temper_filter  = Cloth.objects.filter(temp_max__gte=now_temp).filter(temp_min__lte=now_temp)
+            temper_filter  = Cloth.objects.filter(temp_max__gte=now_temp, temp_min__lte=now_temp)
             temp_clothes_F = list(temper_filter.filter(user_gender="F").values('id','img_ref'))
             temp_clothes_M = list(temper_filter.filter(user_gender="M").values('id','img_ref'))
             select_cloth   = [    

@@ -22,14 +22,15 @@ class WeatherInfo(View):
     def post(self, request):
         curl_location = {}
 
-        if hasattr(request, 'lat') and hasattr(request, 'lon'):
-            curl_location = json.loads(request.body)
-            lat = curl_location["lat"]
-            lon = curl_location["lon"]
-        else:
+        if not request.body:
             lat = self.DEFAULT_LAT_SEOUL
             lon = self.DEFAULT_LON_SEOUL
-
+        else:
+            curl_location = json.loads(request.body)
+            lat = curl_location.get("lat", self.DEFAULT_LAT_SEOUL)
+            lon = curl_location.get("lon", self.DEFAULT_LON_SEOUL)
+        
+    
         location = {
             'lat'  : lat,
             'lon'  : lon,

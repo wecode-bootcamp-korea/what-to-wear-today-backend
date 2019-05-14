@@ -98,7 +98,7 @@ class WeatherInfo(View):
         comment      = clothes.get_weather_comments(temp_id_adj)
         user_gender  = request.GET.get("user_gender")
         
-        select_cloth_id = request.GET.get("img_id")
+        select_cloth_id = int(request.GET.get("img_id"))
         select_cloth    = list(Cloth.objects.filter(id = select_cloth_id).values('id','img_ref','page_ref'))
 
         if hasattr(request, 'user'):
@@ -154,13 +154,15 @@ class WeatherInfo(View):
                 pass
             else:
                 for d in random_clothes:
+
                     if d.get("img_id") == select_cloth_id:
                         random_clothes.remove(d)
                         random_clothes.insert(0, select_cloth[0])
                         break
-                    else:
+                    elif d == random_clothes[len(random_clothes)-1]:
                         random_clothes.insert(0, select_cloth[0])
                         break
+
         else:
             temp_clothes   = ''
             temper_filter  = Cloth.objects.filter(temp_max__gte=now_temp, temp_min__lte=now_temp)
@@ -197,11 +199,12 @@ class WeatherInfo(View):
                 pass
             else:
                 for d in random_clothes:
+
                     if d.get("img_id") == select_cloth_id:
                         random_clothes.remove(d)
                         random_clothes.insert(0, select_cloth[0])
                         break
-                    else:
+                    elif d == random_clothes[len(random_clothes)-1]:
                         random_clothes.insert(0, select_cloth[0])
                         break
 

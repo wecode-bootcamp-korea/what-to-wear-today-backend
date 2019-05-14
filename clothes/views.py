@@ -78,9 +78,15 @@ class TopImageView(View):
     
     @login_decorator_pass
     def get(self, request):
-        top_number        = request.GET.get("top_number")
-        hearts_list       = list(HeartTime.objects.values('cloth_id').distinct())
+        top_number = int(request.GET.get("top_number"))
         
+        if top_number > 50:
+            top_number = 50
+        else:
+            pass
+
+        hearts_list = list(HeartTime.objects.values('cloth_id').distinct())
+ 
         if hasattr(request, 'user'):
             user = request.user
             if len(hearts_list) == 0:
@@ -91,6 +97,7 @@ class TopImageView(View):
                             "img_id"       : d['cloth_id'],
                             "img_ref"      : Cloth.objects.get(id = d['cloth_id']).img_ref,
                             "page_ref"     : Cloth.objects.get(id = d['cloth_id']).page_ref,
+                            "user_gender"  : Cloth.objects.get(id = d['cloth_id']).user_gender,
                             "total_hearts" : Cloth.objects.get(id = d['cloth_id']).total_hearts,
                             "heart_check"  : Cloth.objects.get(id = d['cloth_id']).hearts.filter(id = user.id).exists()
                         } for d in hearts_list
@@ -104,6 +111,7 @@ class TopImageView(View):
                             "img_id"       : d['cloth_id'],
                             "img_ref"      : Cloth.objects.get(id = d['cloth_id']).img_ref,
                             "page_ref"     : Cloth.objects.get(id = d['cloth_id']).page_ref,
+                            "user_gender"  : Cloth.objects.get(id = d['cloth_id']).user_gender,
                             "total_hearts" : Cloth.objects.get(id = d['cloth_id']).total_hearts,
                             "heart_check"  : False
                         } for d in hearts_list
@@ -111,6 +119,13 @@ class TopImageView(View):
             
         data = sorted(total_hearts_list, key = itemgetter('total_hearts'))
         data.reverse()
+
+        if request.GET.get("user_gender") == None: 
+            pass
+        elif request.GET.get("user_gender") == "M":
+            data = [d for d in data if d['user_gender'] == 'M']
+        elif request.GET.get("user_gender") == "F":
+            data = [d for d in data if d['user_gender'] == 'F'] 
         
         top = data[0 : min(int(top_number),len(data))]
         

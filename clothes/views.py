@@ -6,7 +6,7 @@ from django.http import JsonResponse, HttpResponse
 
 from user.models import User
 from .models import Cloth, HeartTime
-from user.utils import login_decorator
+from user.utils import login_decorator,login_decorator_pass
 
 class HeartView(View):
 
@@ -33,8 +33,9 @@ class HeartView(View):
         hearts_list = list(hearts)
         cloth_id    = [
             {
-                'img_id' : d['cloth_id'], 
-                'img_ref' : Cloth.objects.get(id = d['cloth_id']).img_ref,
+                'img_id'       : d['cloth_id'], 
+                'img_ref'      : Cloth.objects.get(id = d['cloth_id']).img_ref,
+                'page_ref'     : Cloth.objects.get(id = d['cloth_id']).page_ref,
                 'total_hearts' : Cloth.objects.get(id = d['cloth_id']).total_hearts
             } for d in hearts_list
         ]
@@ -74,17 +75,41 @@ class ClothesRecom(View):
         return weather_comment[temp_id]
 
 class TopImageView(View):
-
+    
+    @login_decorator_pass
     def get(self, request):
         top_number        = request.GET.get("top_number")
-        hearts_list       = list(Cloth.objects.all().values('hearts__id').values('pk').distinct())
-        total_hearts_list = [
-                {
-                    "img_id" : d['pk'],
-                    "total_hearts" : Cloth.objects.get(id = d['pk']).total_hearts
-                } for d in hearts_list
-        ]
-        data              = sorted(total_hearts_list, key = itemgetter('total_hearts'))
+        hearts_list       = list(HeartTime.objects.values('cloth_id').distinct())
+        
+        if hasattr(request, 'user'):
+            user = request.user
+            if len(hearts_list) == 0:
+                return JsonResponse({"message" : "NO_HEARTS_LIST"})
+            else:
+                total_hearts_list = [
+                        {
+                            "img_id"       : d['cloth_id'],
+                            "img_ref"      : Cloth.objects.get(id = d['cloth_id']).img_ref,
+                            "page_ref"     : Cloth.objects.get(id = d['cloth_id']).page_ref,
+                            "total_hearts" : Cloth.objects.get(id = d['cloth_id']).total_hearts,
+                            "heart_check"  : Cloth.objects.get(id = d['cloth_id']).hearts.filter(id = user.id).exists()
+                        } for d in hearts_list
+                ]
+        else:
+            if len(hearts_list) == 0:
+                return JsonResponse({"message" : "NO_HEARTS_LIST"})
+            else:
+                total_hearts_list = [
+                        {
+                            "img_id"       : d['cloth_id'],
+                            "img_ref"      : Cloth.objects.get(id = d['cloth_id']).img_ref,
+                            "page_ref"     : Cloth.objects.get(id = d['cloth_id']).page_ref,
+                            "total_hearts" : Cloth.objects.get(id = d['cloth_id']).total_hearts,
+                            "heart_check"  : False
+                        } for d in hearts_list
+                ]
+            
+        data = sorted(total_hearts_list, key = itemgetter('total_hearts'))
         data.reverse()
         
         top = data[0 : min(int(top_number),len(data))]

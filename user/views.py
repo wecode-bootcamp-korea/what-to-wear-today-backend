@@ -81,7 +81,12 @@ class AuthView(View):
             encoded_jwt_id = jwt.encode({'user_id' : user.id}, wtwt_secret, algorithm='HS256')
 
             if bcrypt.checkpw(login_user['user_password'].encode("UTF-8"), user.user_password.encode("UTF-8")):
-                return JsonResponse({"access_token" : encoded_jwt_id.decode("UTF-8")})
+                return JsonResponse(
+                            {
+                                "access_token" : encoded_jwt_id.decode("UTF-8"),
+                                "user_gender" : user.user_gender
+                            }
+                        )
             else:
                 return JsonResponse({'message' : '비밀번호를 다시 확인해주세요.'}, status=400)
 

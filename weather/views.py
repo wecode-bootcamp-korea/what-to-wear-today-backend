@@ -99,7 +99,7 @@ class WeatherInfo(View):
         user_gender  = request.GET.get("user_gender")
         
         select_cloth_id = request.GET.get("img_id")
-        select_cloth    = list(Cloth.objects.filter(id = select_cloth_id).values('id','img_ref'))
+        select_cloth    = list(Cloth.objects.filter(id = select_cloth_id).values('id','img_ref','page_ref'))
 
         if hasattr(request, 'user'):
             user = request.user
@@ -107,7 +107,8 @@ class WeatherInfo(View):
             select_cloth = [
                 {              
                     "img_id"      : d["id"],        
-                    "img_ref"     : d["img_ref"],   
+                    "img_ref"     : d["img_ref"],
+                    "page_ref"    : d["page_ref"],
                     "heart_check" : Cloth.objects.get(id = d['id']).hearts.filter(id = user.id).exists()                                                                                
                 } for d in select_cloth
             ]
@@ -128,8 +129,8 @@ class WeatherInfo(View):
 
             temper_filter  = Cloth.objects.filter(temp_max__gte=now_temp, temp_min__lte=now_temp)
             temp_clothes   = ''
-            temp_clothes_F = list(temper_filter.filter(user_gender="F").values('id','img_ref'))
-            temp_clothes_M = list(temper_filter.filter(user_gender="M").values('id','img_ref'))
+            temp_clothes_F = list(temper_filter.filter(user_gender="F").values('id','img_ref','page_ref'))
+            temp_clothes_M = list(temper_filter.filter(user_gender="M").values('id','img_ref','page_ref'))
 
             if user_gender == "F":
                 temp_clothes = temp_clothes_F
@@ -140,8 +141,9 @@ class WeatherInfo(View):
             
             my_temp_clothes = [
                 {
-                    "img_id"      : d['id'],
-                    "img_ref"     : d['img_ref'],
+                    "img_id"      : d["id"],
+                    "img_ref"     : d["img_ref"],
+                    "page_ref"    : d["page_ref"],
                     "heart_check" : Cloth.objects.get(id = d['id']).hearts.filter(id = user.id).exists()
                 } for d in temp_clothes
             ]
@@ -162,12 +164,13 @@ class WeatherInfo(View):
         else:
             temp_clothes   = ''
             temper_filter  = Cloth.objects.filter(temp_max__gte=now_temp, temp_min__lte=now_temp)
-            temp_clothes_F = list(temper_filter.filter(user_gender="F").values('id','img_ref'))
-            temp_clothes_M = list(temper_filter.filter(user_gender="M").values('id','img_ref'))
+            temp_clothes_F = list(temper_filter.filter(user_gender="F").values('id','img_ref','page_ref'))
+            temp_clothes_M = list(temper_filter.filter(user_gender="M").values('id','img_ref','page_ref'))
             select_cloth   = [    
                 {              
                     "img_id"      : d["id"],        
-                    "img_ref"     : d["img_ref"],   
+                    "img_ref"     : d["img_ref"],
+                    "page_ref"    : d["page_ref"],
                     "heart_check" : False                                                                             
                 } for d in select_cloth 
             ]
@@ -183,6 +186,7 @@ class WeatherInfo(View):
                 {
                     "img_id"      : d['id'],
                     "img_ref"     : d['img_ref'],
+                    "page_ref"    : d['page_ref'],
                     "heart_check" : False
                 } for d in temp_clothes
             ]

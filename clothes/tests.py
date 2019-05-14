@@ -56,6 +56,47 @@ class ClothTest(TestCase):
         
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.json(), {"hearts_list" : cloth_id})
+    
+    def test_user_top_list(self):
+        c = Client()
+        test1        = {'user_name':'test1', 'user_password':'1234'}
+        response     = c.post('/user/auth', json.dumps(test1), content_type="application/json")
+        access_token = response.json()['access_token']
+
+        cloth_img = Cloth.objects.get(item_id='111')
+        test2    = {'img_id':cloth_img.id}
+        cloth    = Cloth.objects.get(id = test2['img_id'])        
+        c.post('/clothes/heart', json.dumps(test2), **{'HTTP_AUTHORIZATION':access_token, 'content_type':"application/json"})
+
+        parameter = {'top_number':3}
+        response = c.get('/clothes/top', parameter, **{'HTTP_AUTHORIZATION':access_token, 'content_type':"application/json"})
+        
+        self.assertEqual(response.status_code, 200)
+
+    def test_top_list(self):
+        c = Client()
+        test1        = {'user_name':'test1', 'user_password':'1234'}
+        response     = c.post('/user/auth', json.dumps(test1), content_type="application/json")
+        access_token = response.json()['access_token']
+
+        cloth_img = Cloth.objects.get(item_id='111')
+        test2    = {'img_id':cloth_img.id}
+        cloth    = Cloth.objects.get(id = test2['img_id'])
+        c.post('/clothes/heart', json.dumps(test2), **{'HTTP_AUTHORIZATION':access_token, 'content_type':"application/json"})
+
+        parameter = {'top_number':3}
+        response = c.get('/clothes/top', parameter, content_type="application/json")
+
+        self.assertEqual(response.status_code, 200)
+
+    def test_no_top_list(self):
+        c = Client()
+        
+        parameter = {'top_number':3}
+        response = c.get('/clothes/top', parameter, content_type="application/json")
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.json(), {"message" : "NO_HEARTS_LIST"})
 
     def tearDown(self):
         Cloth.objects.filter(item_id="111").delete()

@@ -89,6 +89,8 @@ class TopImageView(View):
                 total_hearts_list = [
                         {
                             "img_id"       : d['cloth_id'],
+                            "img_ref"      : Cloth.objects.get(id = d['cloth_id']).img_ref,
+                            "page_ref"     : Cloth.objects.get(id = d['cloth_id']).page_ref,
                             "total_hearts" : Cloth.objects.get(id = d['cloth_id']).total_hearts,
                             "heart_check"  : Cloth.objects.get(id = d['cloth_id']).hearts.filter(id = user.id).exists()
                         } for d in hearts_list
@@ -100,6 +102,8 @@ class TopImageView(View):
                 total_hearts_list = [
                         {
                             "img_id"       : d['cloth_id'],
+                            "img_ref"      : Cloth.objects.get(id = d['cloth_id']).img_ref,
+                            "page_ref"     : Cloth.objects.get(id = d['cloth_id']).page_ref,
                             "total_hearts" : Cloth.objects.get(id = d['cloth_id']).total_hearts,
                             "heart_check"  : False
                         } for d in hearts_list

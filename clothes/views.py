@@ -33,8 +33,9 @@ class HeartView(View):
         hearts_list = list(hearts)
         cloth_id    = [
             {
-                'img_id' : d['cloth_id'], 
-                'img_ref' : Cloth.objects.get(id = d['cloth_id']).img_ref,
+                'img_id'       : d['cloth_id'], 
+                'img_ref'      : Cloth.objects.get(id = d['cloth_id']).img_ref,
+                'page_ref'     : Cloth.objects.get(id = d['cloth_id']).page_ref,
                 'total_hearts' : Cloth.objects.get(id = d['cloth_id']).total_hearts
             } for d in hearts_list
         ]

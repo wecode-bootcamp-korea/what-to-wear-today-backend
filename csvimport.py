@@ -20,6 +20,8 @@ else:
 cursor = db.cursor()
 cursor.execute(f"DELETE FROM heart_time")
 cursor.execute(f"DELETE FROM clothes")
+cursor.execute(f"DELETE FROM clothes_icon")
+cursor.execute(f"DELETE FROM temp_icon")
 
 with open('merge_data.csv') as csv_files:
     reader = csv.DictReader(csv_files)
@@ -46,6 +48,62 @@ with open('merge_data.csv') as csv_files:
         cursor.execute(sql, row)
 
 db.commit()
+
+with open('clothes_data_4.csv') as csv_files:
+    reader = csv.DictReader(csv_files)
+
+    for row in reader:
+        print(f"row == {row['id']}")
+        
+        sql = f"""INSERT INTO clothes_icon (
+            id,
+            clothes_des,
+            naver_ref
+        ) VALUES (
+            %(id)s,
+            %(clothes_des)s,
+            %(naver_link)s
+        )"""
+
+        cursor.execute(sql, row)
+
+db.commit()
+
+with open('temp_cat3.csv') as csv_files:
+    reader = csv.DictReader(csv_files)
+
+    for row in reader:
+        print(",".join(row))
+        
+        sql = f"""INSERT INTO temperature (
+            temp_id,
+            temp_min,
+            temp_max
+        ) VALUES (
+            %(temp_id)s,
+            %(temp_min)s,
+            %(temp_max)s
+        )"""
+
+        cursor.execute(sql, row)
+
+db.commit()
+
+with open('mtm.csv') as csv_files:
+    reader = csv.DictReader(csv_files)
+
+    for row in reader:
+        print(",".join(row))
+        
+        sql = f"""INSERT INTO temp_icon (
+            temp_id,
+            icon_id
+        ) VALUES (
+            %(temperaturecriteria_id)s,
+            %(clothesicon_id)s
+        )"""
+
+        cursor.execute(sql, row)
+
+db.commit()
 db.close()
-
-

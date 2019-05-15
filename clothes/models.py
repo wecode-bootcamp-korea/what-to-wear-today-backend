@@ -24,6 +24,7 @@ class Cloth(models.Model):
 
 class ClothesIcon(models.Model):
     clothes_des = models.CharField(max_length=40)
+    naver_ref = models.CharField(max_length=2500, default=None)
 
     class Meta:
         db_table = "clothes_icon"

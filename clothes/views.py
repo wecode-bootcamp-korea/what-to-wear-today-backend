@@ -82,8 +82,6 @@ class TopImageView(View):
         
         if top_number > 50:
             top_number = 50
-        else:
-            pass
 
         hearts_list = list(HeartTime.objects.values('cloth_id').distinct())
  
@@ -116,17 +114,16 @@ class TopImageView(View):
                             "heart_check"  : False
                         } for d in hearts_list
                 ]
-            
-        data = sorted(total_hearts_list, key = itemgetter('total_hearts'))
-        data.reverse()
 
         if request.GET.get("user_gender") == None: 
-            pass
+            sort_list = sorted(total_hearts_list, key = itemgetter('total_hearts'), reverse=True)
         elif request.GET.get("user_gender") == "M":
-            data = [d for d in data if d['user_gender'] == 'M']
+            top_list = [cloth for cloth in total_hearts_list if cloth['user_gender'] == 'M']
+            sort_list = sorted(top_list, key = itemgetter('total_hearts'), reverse=True)
         elif request.GET.get("user_gender") == "F":
-            data = [d for d in data if d['user_gender'] == 'F'] 
-        
-        top = data[0 : min(int(top_number),len(data))]
+            top_list = [cloth for cloth in total_hearts_list if cloth['user_gender'] == 'F']
+            sort_list = sorted(top_list, key = itemgetter('total_hearts'), reverse=True)
+ 
+        top = sort_list[0 : min(int(top_number),len(sort_list))]
         
         return JsonResponse({'top_list' : top})

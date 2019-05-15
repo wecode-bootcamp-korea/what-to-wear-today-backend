@@ -100,11 +100,16 @@ class ClothTest(TestCase):
                             "heart_check"  : Cloth.objects.get(id = d['cloth_id']).hearts.filter(id = user.id).exists()
                         } for d in hearts_list
                 ]
-
-        data = sorted(total_hearts_list, key = itemgetter('total_hearts'))
-        data.reverse()
-
-        top = data[0 : min(int(top_number),len(data))]
+        if parameter.get("user_gender",True):
+            sort_list = sorted(total_hearts_list, key = itemgetter('total_hearts'), reverse=True)                                                                      
+        elif parameter["user_gender"] == "M":
+            top_list = [cloth for cloth in total_hearts_list if cloth['user_gender'] == 'M']
+            sort_list = sorted(top_list, key = itemgetter('total_hearts'), reverse=True)                                                                               
+        elif parameter["user_gender"] == "F":
+            top_list = [cloth for cloth in total_hearts_list if cloth['user_gender'] == 'F']
+            sort_list = sorted(top_list, key = itemgetter('total_hearts'), reverse=True) 
+        
+        top = sort_list[0 : min(int(top_number),len(sort_list))]
 
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.json(), {"top_list" : top})
@@ -135,16 +140,20 @@ class ClothTest(TestCase):
                             "heart_check"  : False
                         } for d in hearts_list
                 ]
+        
+        if parameter.get("user_gender",True): 
+            sort_list = sorted(total_hearts_list, key = itemgetter('total_hearts'), reverse=True)                                                                      
+        elif parameter["user_gender"] == "M":
+            top_list = [cloth for cloth in total_hearts_list if cloth['user_gender'] == 'M']
+            sort_list = sorted(top_list, key = itemgetter('total_hearts'), reverse=True)                                                                               
+        elif parameter["user_gender"] == "F":
+            top_list = [cloth for cloth in total_hearts_list if cloth['user_gender'] == 'F']
+            sort_list = sorted(top_list, key = itemgetter('total_hearts'), reverse=True) 
+        
+        top = sort_list[0 : min(int(top_number),len(sort_list))]
 
-        data = sorted(total_hearts_list, key = itemgetter('total_hearts'))
-        data.reverse()
-        
-        top = data[0 : min(int(top_number),len(data))]
-        
         self.assertEqual(response.status_code, 200)
-        
-        result = response.json()
-        self.assertEqual(result, {"top_list" : top})
+        self.assertEqual(response.json(), {"top_list" : top})
 
     def test_genderM_top_list(self):
         c = Client()
@@ -173,12 +182,17 @@ class ClothTest(TestCase):
                         } for d in hearts_list
                 ]
 
-        data = sorted(total_hearts_list, key = itemgetter('total_hearts'))
-        data.reverse()
-        data = [d for d in data if d['user_gender'] == 'M']
-
-        top = data[0 : min(int(top_number),len(data))]
-
+        if parameter["user_gender"] == None:
+            sort_list = sorted(total_hearts_list, key = itemgetter('total_hearts'), reverse=True)
+        elif parameter["user_gender"] == "M":
+            top_list = [cloth for cloth in total_hearts_list if cloth['user_gender'] == 'M']
+            sort_list = sorted(top_list, key = itemgetter('total_hearts'), reverse=True)
+        elif parameter["user_gender"] == "F":
+            top_list = [cloth for cloth in total_hearts_list if cloth['user_gender'] == 'F']
+            sort_list = sorted(top_list, key = itemgetter('total_hearts'), reverse=True)
+        
+        top = sort_list[0 : min(int(top_number),len(sort_list))] 
+        
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.json(), {"top_list" : top})
 
@@ -209,12 +223,16 @@ class ClothTest(TestCase):
                         } for d in hearts_list
                 ]
 
-        data = sorted(total_hearts_list, key = itemgetter('total_hearts'))
-        data.reverse()
-        data = [d for d in data if d['user_gender'] == 'F']
-
-        top = data[0 : min(int(top_number),len(data))]
-
+        if parameter["user_gender"] == None:
+            sort_list = sorted(total_hearts_list, key = itemgetter('total_hearts'), reverse=True)
+        elif parameter["user_gender"] == "M":
+            top_list = [cloth for cloth in total_hearts_list if cloth['user_gender'] == 'M']
+            sort_list = sorted(top_list, key = itemgetter('total_hearts'), reverse=True)
+        elif parameter["user_gender"] == "F":
+            top_list = [cloth for cloth in total_hearts_list if cloth['user_gender'] == 'F']
+            sort_list = sorted(top_list, key = itemgetter('total_hearts'), reverse=True)
+        
+        top = sort_list[0 : min(int(top_number),len(sort_list))] 
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.json(), {"top_list" : top})
 

@@ -146,18 +146,23 @@ class ClothTest(TestCase):
     def test_user_heart_check(self):
         c = Client()
 
-        test1        = {'user_name':'test', 'user_password':'test'}
+        test1        = {'user_name':'test1', 'user_password':'1234'}
         response     = c.post('/user/auth', json.dumps(test1), content_type="application/json")
         access_token = response.json()['access_token']
 
-        parameter = {'cloth_id' : 3346}
-        response = c.get('/clothes/heart/check', parameter, content_type="application/json")
+        cloth = Cloth.objects.get(item_id='111')
+        test2    = {'img_id':cloth.id}
+        c.post('/clothes/heart', json.dumps(test2), **{'HTTP_AUTHORIZATION':access_token, 'content_type':"application/json"})
+        parameter = {'cloth_id' : cloth.id}
+        response = c.get(f'/clothes/heart/check?cloth_id={cloth.id}', **{'HTTP_AUTHORIZATION':access_token, 'content_type':"application/json"})
         heart_info  = {
-            'img_id'     : 3446, 
-            'heart_check': True 
+            'cloth_id'     : cloth.id, 
+            'has_heart': True 
          }
             
         self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.json(),{'heart':heart_info} )
+                
 
     def tearDown(self):
         Cloth.objects.filter(item_id="111").delete()

@@ -121,11 +121,11 @@ class HeartCheck(View):
     def get(self, request):
         user        = request.user
         cloth_id_get = request.GET.get('cloth_id')
-        print(cloth_id_get)
+
         try:
             cloth_id_exists = HeartTime.objects.filter(user_id=user.id).get(cloth_id=cloth_id_get).cloth_id
             has_heart = True
-        except:
+        except HeartTime.DoesNotExist:
             cloth_id_exists = None
             has_heart = False
 

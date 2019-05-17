@@ -1,5 +1,8 @@
 # Vim
 *.swp
+*.swo
+*.swn
+*.swm
 my_settings.py
 /csv
 

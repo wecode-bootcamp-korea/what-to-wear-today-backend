@@ -101,7 +101,7 @@ class WeatherInfo(View):
         
         select_cloth_id = request.GET.get("img_id")
         select_cloth    = list(Cloth.objects.filter(id = select_cloth_id).values('id','img_ref','page_ref'))
-        select_icon_ref = list(ClothesIcon.objects.filter(temp_icon_name__temp_id=temp_id).values('id','naver_ref'))
+        select_icon_ref = list(ClothesIcon.objects.filter(temp_icon_name__temp_id=temp_id_adj).values('id','naver_ref'))
 
         if hasattr(request, 'user'):
             user = request.user

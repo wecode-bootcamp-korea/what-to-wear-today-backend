@@ -19,6 +19,78 @@ class WeatherInfo(View):
     DEFAULT_LAT_SEOUL=37.5665       
     DEFAULT_LON_SEOUL=126.9780
 
+    def create_random_clothes(select_cloth,temper_filter,select_cloth_id,user_gender,user,random_clothes):
+
+        if len(select_cloth) == 0:
+            temp_clothes_F = list(temper_filter.filter(user_gender="F").values('id','img_ref','page_ref'))
+            temp_clothes_M = list(temper_filter.filter(user_gender="M").values('id','img_ref','page_ref'))
+
+            if user_gender == "F":
+                temp_clothes = temp_clothes_F
+            elif user_gender == "M":
+                temp_clothes = temp_clothes_M
+            else:
+                return JsonResponse({'message' : 'GENDER_NOT_EXIST'}, status=400)
+            
+            if user == None:
+                my_temp_clothes = [
+                    {   
+                        "img_id"      : d["id"],
+                        "img_ref"     : d["img_ref"],
+                        "page_ref"    : d["page_ref"],
+                        "heart_check" : False
+                    } for d in temp_clothes
+                ]
+            else:
+                my_temp_clothes = [
+                    {
+                        "img_id"      : d["id"],
+                        "img_ref"     : d["img_ref"],
+                        "page_ref"    : d["page_ref"],
+                        "heart_check" : Cloth.objects.get(id = d['id']).hearts.filter(id = user.id).exists()
+                    } for d in temp_clothes
+                ]
+
+            random_clothes = random.sample(my_temp_clothes, min(10,len(my_temp_clothes)))
+
+            return random_clothes
+
+        else:
+            temp_clothes_F = list(temper_filter.filter(user_gender="F").exclude(id = int(select_cloth_id)).values('id','img_ref','page_ref'))
+            temp_clothes_M = list(temper_filter.filter(user_gender="M").exclude(id = int(select_cloth_id)).values('id','img_ref','page_ref'))
+
+            if user_gender == "F":
+                temp_clothes = temp_clothes_F
+            elif user_gender == "M":
+                temp_clothes = temp_clothes_M
+            else:
+                return JsonResponse({'message' : 'GENDER_NOT_EXIST'}, status=400)
+            
+            if user == None:
+                my_temp_clothes = [
+                    {
+                        "img_id"      : d["id"],
+                        "img_ref"     : d["img_ref"],
+                        "page_ref"    : d["page_ref"],
+                        "heart_check" : False
+                    } for d in temp_clothes
+                ]
+            else:
+                my_temp_clothes = [
+                    {
+                        "img_id"      : d["id"],
+                        "img_ref"     : d["img_ref"],
+                        "page_ref"    : d["page_ref"],
+                        "heart_check" : Cloth.objects.get(id = d['id']).hearts.filter(id = user.id).exists()
+                    } for d in temp_clothes
+                ]
+
+            random_clothes = random.sample(my_temp_clothes, min(9,len(my_temp_clothes)))
+            random_clothes.insert(0,select_cloth[0])
+            
+            return random_clothes
+
+
     @login_decorator_pass
     def post(self, request):
         curl_location = {}
@@ -67,7 +139,7 @@ class WeatherInfo(View):
             )
         
         return JsonResponse(my_response)
-                
+
     @login_decorator_pass      
     def get(self, request):
 
@@ -104,8 +176,9 @@ class WeatherInfo(View):
         select_icon_ref = list(ClothesIcon.objects.filter(temp_icon_name__temp_id=temp_id_adj).values('id','naver_ref'))
 
         if hasattr(request, 'user'):
-            user = request.user
-
+            user        = request.user
+            user_option = UserOption.objects.get(user = user.id) 
+            
             select_cloth = [
                 {              
                     "img_id"      : d["id"],        
@@ -114,98 +187,41 @@ class WeatherInfo(View):
                     "heart_check" : Cloth.objects.get(id = d['id']).hearts.filter(id = user.id).exists()                                                                                
                 } for d in select_cloth
             ]
-            
-            try:
-                user_option = UserOption.objects.get(user=user)
+
+            if UserOption.objects.filter(user=user).exists():
                 if now_temp >= 17 and user_option.hate_hot == True:
                     now_temp += 5
                 elif now_temp <= 9 and user_option.hate_cold == True:
                     now_temp -= 5
-            except ObjectDoesNotExist:
-                pass
             
             if user_gender == None:
                 user_gender = user.user_gender
-            else:
-                pass
 
             temper_filter  = Cloth.objects.filter(temp_max__gte=now_temp, temp_min__lte=now_temp)
             temp_clothes   = ''
-            temp_clothes_F = list(temper_filter.filter(user_gender="F").values('id','img_ref','page_ref'))
-            temp_clothes_M = list(temper_filter.filter(user_gender="M").values('id','img_ref','page_ref'))
+            random_clothes = []
 
-            if user_gender == "F":
-                temp_clothes = temp_clothes_F
-            elif user_gender == "M":
-                temp_clothes = temp_clothes_M
-            else:
-                return JsonResponse({'message' : 'GENDER_NOT_EXIST'}, status=400)
+            random_clothes = WeatherInfo.create_random_clothes(select_cloth,temper_filter,select_cloth_id,user_gender,user,random_clothes)
+
+        else:
+            user = None
+            if user_gender == None:
+                user_gender = random.choice(["M","F"])
             
-            my_temp_clothes = [
+            select_cloth = [
                 {
                     "img_id"      : d["id"],
                     "img_ref"     : d["img_ref"],
                     "page_ref"    : d["page_ref"],
-                    "heart_check" : Cloth.objects.get(id = d['id']).hearts.filter(id = user.id).exists()
-                } for d in temp_clothes
+                    "heart_check" : False
+                } for d in select_cloth
             ]
-            
-            random_clothes = random.sample(my_temp_clothes, min(10,len(my_temp_clothes)))
 
-            if len(select_cloth) == 0:
-                pass
-            else:
-                for d in random_clothes:
-                    if d.get("img_id") == select_cloth_id:
-                        random_clothes.remove(d)
-                        random_clothes.insert(0, select_cloth[0])
-                        break
-                    else:
-                        random_clothes.insert(0, select_cloth[0])
-                        break
-        else:
             temp_clothes   = ''
             temper_filter  = Cloth.objects.filter(temp_max__gte=now_temp, temp_min__lte=now_temp)
-            temp_clothes_F = list(temper_filter.filter(user_gender="F").values('id','img_ref','page_ref'))
-            temp_clothes_M = list(temper_filter.filter(user_gender="M").values('id','img_ref','page_ref'))
-            select_cloth   = [    
-                {              
-                    "img_id"      : d["id"],        
-                    "img_ref"     : d["img_ref"],
-                    "page_ref"    : d["page_ref"],
-                    "heart_check" : False                                                                             
-                } for d in select_cloth 
-            ]
-            
-            if user_gender == "F":
-                temp_clothes = temp_clothes_F
-            elif user_gender == "M":
-                temp_clothes = temp_clothes_M
-            else:
-                return JsonResponse({'message' : 'GENDER_INVALID'}, status=400)
-            
-            my_temp_clothes = [
-                {
-                    "img_id"      : d['id'],
-                    "img_ref"     : d['img_ref'],
-                    "page_ref"    : d['page_ref'],
-                    "heart_check" : False
-                } for d in temp_clothes
-            ]
+            random_clothes = []
 
-            random_clothes = random.sample(my_temp_clothes, min(10,len(my_temp_clothes)))
-
-            if len(select_cloth) == 0:
-                pass
-            else:
-                for d in random_clothes:
-                    if d.get("img_id") == select_cloth_id:
-                        random_clothes.remove(d)
-                        random_clothes.insert(0, select_cloth[0])
-                        break
-                    else:
-                        random_clothes.insert(0, select_cloth[0])
-                        break
+            random_clothes = WeatherInfo.create_random_clothes(select_cloth,temper_filter,select_cloth_id,user_gender,user,random_clothes)
 
         my_response.update(
                 {

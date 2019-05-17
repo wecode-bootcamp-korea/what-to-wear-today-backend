@@ -7,7 +7,8 @@ from django.shortcuts import render
 from django.views import View
 from django.http import JsonResponse
 
-from clothes.models import Cloth
+from .models import TempIcon
+from clothes.models import Cloth, ClothesIcon
 from clothes.views import ClothesRecom
 from user.views import *
 from user.models import User, UserOption
@@ -100,6 +101,7 @@ class WeatherInfo(View):
         
         select_cloth_id = request.GET.get("img_id")
         select_cloth    = list(Cloth.objects.filter(id = select_cloth_id).values('id','img_ref','page_ref'))
+        select_icon_ref = list(ClothesIcon.objects.filter(temp_icon_name__temp_id=temp_id).values('id','naver_ref'))
 
         if hasattr(request, 'user'):
             user = request.user
